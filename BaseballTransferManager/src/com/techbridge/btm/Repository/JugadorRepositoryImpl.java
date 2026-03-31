@@ -78,7 +78,7 @@ public class JugadorRepositoryImpl implements JugadorRepository {
         return ju;
     }
 
-    // utilizamos el override para sobreescribir el metodo BuscarJugador // 
+    // utilizamos el override para sobreescribir el metodo eliminar // 
     @Override
     public void eliminar(String nombre) {
         

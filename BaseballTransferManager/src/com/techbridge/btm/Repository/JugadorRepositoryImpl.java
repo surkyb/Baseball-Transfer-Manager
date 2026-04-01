@@ -1,4 +1,6 @@
 package com.techbridge.btm.repository;
+import com.techbridge.btm.dbconnection.DatabaseConnection;
+import com.techbridge.btm.model.Jugador;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -66,6 +68,7 @@ public class JugadorRepositoryImpl implements JugadorRepository {
                 
                 //Aqui agregamos los datos dados por la busqueda a un objeto tipo Jugador
                 ju = new Jugador();
+                ju.setId(resul.getInt("id"));
                 ju.setNombre(resul.getString("nombre"));
                 ju.setEdad(resul.getInt("edad"));
                 ju.setPosicion(resul.getString("posicion"));

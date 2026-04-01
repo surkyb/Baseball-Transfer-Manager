@@ -1,5 +1,7 @@
 package com.techbridge.btm.repository;
 
+import com.techbridge.btm.model.Jugador;
+
 
 /**
  *

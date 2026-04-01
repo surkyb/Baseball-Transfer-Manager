@@ -1,4 +1,6 @@
 package com.techbridge.btm.repository;
+import com.techbridge.btm.dbconnection.DatabaseConnection;
+import com.techbridge.btm.model.Equipo;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -63,6 +65,7 @@ public class EquipoRepositoryImpl implements EquipoRepository {
                 
                 //Aqui agregamos los datos dados por la busqueda a un objeto tipo Equipo
                 equip = new Equipo();
+                equip.setIdEquipo(resul.getInt("id"));
                 equip.setNombre(resul.getString("nombre"));
                 equip.setPresupuesto(resul.getDouble("presupuesto"));
             }

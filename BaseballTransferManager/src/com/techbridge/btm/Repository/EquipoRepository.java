@@ -1,5 +1,7 @@
 package com.techbridge.btm.repository;
 
+import com.techbridge.btm.model.Equipo;
+
 /**
  *
  * @author gilber
@@ -13,6 +15,7 @@ public interface EquipoRepository {
     Equipo buscarEquipo(String nombre);
     
     // Este otro metodo lo creamos para eliminar un equipo
-    void eliminarEquipo(String nombre);
+    void eliminarEquipo(String nombre); 
+    
     
 }

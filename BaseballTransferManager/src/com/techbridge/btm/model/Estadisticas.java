@@ -6,15 +6,24 @@ package com.techbridge.btm.model;
 
 /**
  *
- * @author UserGPC
+ * @author surky
  */
 public class Estadisticas {
     
+    private int idEstadisticas;
     private int juegos;
     private int hits;
     private int homeRuns;
     private int rbis;
     private double promedioBateo;
+    private int turnosAlBate;
+    private int baseXBola;
+    private int ponches;
+    private int basesRobadas;
+    private int carrerasAnotadas;
+    
+    
+    
 
     public Estadisticas() {
     }

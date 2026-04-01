@@ -76,6 +76,54 @@ public class Estadisticas {
         this.promedioBateo = promedioBateo;
     }
 
+    public int getIdEstadisticas() {
+        return idEstadisticas;
+    }
+
+    public void setIdEstadisticas(int idEstadisticas) {
+        this.idEstadisticas = idEstadisticas;
+    }
+
+    public int getTurnosAlBate() {
+        return turnosAlBate;
+    }
+
+    public void setTurnosAlBate(int turnosAlBate) {
+        this.turnosAlBate = turnosAlBate;
+    }
+
+    public int getBaseXBola() {
+        return baseXBola;
+    }
+
+    public void setBaseXBola(int baseXBola) {
+        this.baseXBola = baseXBola;
+    }
+
+    public int getPonches() {
+        return ponches;
+    }
+
+    public void setPonches(int ponches) {
+        this.ponches = ponches;
+    }
+
+    public int getBasesRobadas() {
+        return basesRobadas;
+    }
+
+    public void setBasesRobadas(int basesRobadas) {
+        this.basesRobadas = basesRobadas;
+    }
+
+    public int getCarrerasAnotadas() {
+        return carrerasAnotadas;
+    }
+
+    public void setCarrerasAnotadas(int carrerasAnotadas) {
+        this.carrerasAnotadas = carrerasAnotadas;
+    }
+    
     
     
 }

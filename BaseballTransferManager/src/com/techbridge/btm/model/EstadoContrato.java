@@ -24,7 +24,7 @@ public enum EstadoContrato {
     
     //metodo para traer el enum correspondiente segun el id que pasa sql
     //fromId toma como parametro el id de la bd 
-    public static EstadoContrato FromId(int id){
+    public static EstadoContrato fromId(int id){
         
         for(EstadoContrato estado: EstadoContrato.values()){
             if(estado.getId() == id){

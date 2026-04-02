@@ -116,7 +116,11 @@ public class EquipoRepositoryImpl implements EquipoRepository {
     public ArrayList<Jugador> buscarPorEquipo(int idEquipo){
     
         List<Jugador> jugador = new ArrayList();
-        String sql = "SELECT * FROM jugador WHERE id_equipo = ?";
+        String sql = "SELECT j.*, e.nombre AS nombre " +
+                     "FROM jugador j " +
+                     "JOIN contrato c ON j.id = c.id_jugador " +
+                     "JOIN equipo e ON c.id_equipo = e.id " +
+                     "WHERE e.id = ?";
         
         try (Connection con = DatabaseConnection.getConexion();
              PreparedStatement ps = con.prepareStatement(sql)){
@@ -134,6 +138,11 @@ public class EquipoRepositoryImpl implements EquipoRepository {
                 ju.setId(rs.getInt("id"));
                 ju.setNombre(rs.getString("nombre"));
                 
+                Equipo equi = new Equipo();
+                equi.setIdEquipo(rs.getInt("id_equipo"));
+                equi.setNombre(rs.getString("nombre"));
+                
+                ju.setEquipo(equi);
                 jugador.add(ju);
             }
             

@@ -15,7 +15,7 @@ public interface EstadisticasRepository {
     // Aqui creamos este metodo para poder guardar las estadisticas dado por el GUI
     void guardarEstadisticas(Estadisticas estadis); 
     
-    
+    Estadisticas buscarEstadisticas(int idEstadisticas);
     
     
 }

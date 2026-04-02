@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -114,8 +115,34 @@ public class EquipoRepositoryImpl implements EquipoRepository {
     @Override
     public ArrayList<Jugador> buscarPorEquipo(int idEquipo){
     
-        //Vacio pa que gilbel lo implemente 😈
-        return null;
+        List<Jugador> jugador = new ArrayList();
+        String sql = "SELECT * FROM jugador WHERE id_equipo = ?";
+        
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)){
+            
+            //Aqui agregamos las informaciones necesarias en la consulta//
+            ps.setInt(1, idEquipo);
+           
+            //El resultSet contiene el resultado
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                
+                Jugador ju = new Jugador();
+                
+                ju.setId(rs.getInt("id"));
+                ju.setNombre(rs.getString("nombre"));
+                
+                jugador.add(ju);
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        //Aqui retornamos la lista de los jugadores
+        return (ArrayList<Jugador>) jugador;
     }
     
 }

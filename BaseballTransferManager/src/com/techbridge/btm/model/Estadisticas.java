@@ -11,6 +11,7 @@ package com.techbridge.btm.model;
 public class Estadisticas {
     
     private int idEstadisticas;
+    private int idJugador;
     private int juegos;
     private int hits;
     private int homeRuns;
@@ -28,13 +29,28 @@ public class Estadisticas {
     public Estadisticas() {
     }
 
-    public Estadisticas(int juegos, int hits, int homeRuns, int rbis, double promedioBateo) {
+    public Estadisticas(int idEstadisticas, int juegos, int hits, int homeRuns, int rbis, double promedioBateo, int turnosAlBate, int baseXBola, int ponches, int basesRobadas, int carrerasAnotadas) {
+        this.idEstadisticas = idEstadisticas;
         this.juegos = juegos;
         this.hits = hits;
         this.homeRuns = homeRuns;
         this.rbis = rbis;
         this.promedioBateo = promedioBateo;
+        this.turnosAlBate = turnosAlBate;
+        this.baseXBola = baseXBola;
+        this.ponches = ponches;
+        this.basesRobadas = basesRobadas;
+        this.carrerasAnotadas = carrerasAnotadas;
     }
+
+    public int getIdJugador() {
+        return idJugador;
+    }
+
+    public void setIdJugador(int idJugador) {
+        this.idJugador = idJugador;
+    }
+
 
     public int getJuegos() {
         return juegos;

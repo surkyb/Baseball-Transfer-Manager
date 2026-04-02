@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.techbridge.btm.Repository;
+package com.techbridge.btm.repository;
 
 import com.techbridge.btm.dbconnection.DatabaseConnection;
 import com.techbridge.btm.model.Contrato;
@@ -33,9 +33,9 @@ public class ContratoRepositoryImpl implements ContratoRepository {
         try (Connection con = DatabaseConnection.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             //Aqui agregamos las informaciones necesarias en la consulta//
-            ps.setObject(1, cont.getJugador().getId());
-            ps.setObject(2, cont.getEquipo().getIdEquipo());
-            ps.setObject(3, cont.getEstadoContrato().getId());
+            ps.setInt(1, cont.getJugador().getId());
+            ps.setInt(2, cont.getEquipo().getIdEquipo());
+            ps.setInt(3, cont.getEstadoContrato().getId());
             ps.setDate(4, java.sql.Date.valueOf(cont.getFechaInicio()));
             ps.setDate(5, java.sql.Date.valueOf(cont.getFechaFin()));
             ps.setDouble(6, cont.getSalario());
@@ -92,7 +92,7 @@ public class ContratoRepositoryImpl implements ContratoRepository {
                 int idEstado = resul.getInt("id_estado_contrato");
 
                 cont.setEstadoContrato(
-                        EstadoContrato.FromId(idEstado)
+                        EstadoContrato.fromId(idEstado)
                 );
 
             }

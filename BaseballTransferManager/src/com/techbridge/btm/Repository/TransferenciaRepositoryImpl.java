@@ -1,6 +1,7 @@
 package com.techbridge.btm.repository;
 import com.techbridge.btm.dbconnection.DatabaseConnection;
 import com.techbridge.btm.model.Equipo;
+import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.model.Transferencia;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -29,7 +30,7 @@ public class TransferenciaRepositoryImpl implements TransferenciaRepository {
              PreparedStatement ps = con.prepareStatement(sql)){
             
             //Aqui agregamos las informaciones necesarias en la consulta//
-            ps.setInt(1, transfe.getIdJugador());
+            ps.setInt(1, transfe.getJugador().getId());
             ps.setInt(2, transfe.getEquipoOrigen().getIdEquipo());
             ps.setInt(3, transfe.getEquipoDestino().getIdEquipo());
             ps.setDouble(4,transfe.getMonto());
@@ -73,7 +74,10 @@ public class TransferenciaRepositoryImpl implements TransferenciaRepository {
                 transfe = new Transferencia();
                 transfe.setIdTransferencia(resul.getInt("id"));
                 
-                transfe.setIdJugador(resul.getInt("id_jugador"));
+                //Aqui creamos un objeto tipo jugador
+                Jugador jugadorTransferido = new Jugador();
+                jugadorTransferido.setId(resul.getInt("id_jugador"));
+                transfe.setJugador(jugadorTransferido);
              
                 //Aqui creamos un objeto tipo Equipo para poder leer el ID de la base de datos y mostrarlo
                 Equipo origen = new Equipo();

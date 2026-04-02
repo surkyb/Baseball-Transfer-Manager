@@ -1,9 +1,11 @@
 package com.techbridge.btm.repository;
 import com.techbridge.btm.dbconnection.DatabaseConnection;
 import com.techbridge.btm.model.Equipo;
+import com.techbridge.btm.model.Jugador;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 /**
  *
@@ -103,4 +105,17 @@ public class EquipoRepositoryImpl implements EquipoRepository {
             e.printStackTrace();
         }
     }
+    
+    /**
+     *
+     * @param idEquipo
+     * @return
+     */
+    @Override
+    public ArrayList<Jugador> buscarPorEquipo(int idEquipo){
+    
+        //Vacio pa que gilbel lo implemente 😈
+        return null;
+    }
+    
 }

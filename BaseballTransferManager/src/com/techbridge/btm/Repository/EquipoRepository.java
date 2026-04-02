@@ -1,6 +1,8 @@
 package com.techbridge.btm.repository;
 
 import com.techbridge.btm.model.Equipo;
+import com.techbridge.btm.model.Jugador;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,5 +19,7 @@ public interface EquipoRepository {
     // Este otro metodo lo creamos para eliminar un equipo
     void eliminarEquipo(String nombre); 
     
+    // Metodo para mostrar los jugadores de un equipo
+    ArrayList<Jugador> buscarPorEquipo(int idEquipo);
     
 }

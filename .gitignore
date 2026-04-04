@@ -2,7 +2,6 @@
 *.class
 
 # Package files
-*.jar
 *.war
 *.ear
 
@@ -25,3 +24,4 @@
 .DS_Store
 Thumbs.db
 /BaseballTransferManager/nbproject/private/
+/BaseballTransferManager/build/

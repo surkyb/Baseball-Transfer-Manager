@@ -1,26 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.techbridge.btm.dbconnection;
 import java.sql.*;
 
 /**
- *
  * @author Surky
  */
 public class DatabaseConnection {
-    final static String url = "jdbc:mysql://localhost:3306/BaseballManagerBD";
-    final static String user = "root";
-    final static String password = "admin";
+    final static String URL = "jdbc:mysql://localhost:3306/baseballmanagerbd";
+    final static String USER = "root";
+    final static String PASSWORD = "admin";
     static Connection conexion = null;
     
     private DatabaseConnection () {}
     
     public static Connection getConexion() {
        try {
-       
-       
         if (conexion == null || conexion.isClosed()) {
             conectar();
         }
@@ -42,7 +35,7 @@ public class DatabaseConnection {
     }
     private static void conectar() {
         try {
-            conexion = DriverManager.getConnection(url, user, password);
+            conexion = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }

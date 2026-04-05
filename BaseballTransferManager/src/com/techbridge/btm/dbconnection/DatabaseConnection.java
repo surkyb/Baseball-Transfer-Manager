@@ -47,4 +47,13 @@ public class DatabaseConnection {
             System.out.println("Error: " + e.getMessage());
         }
     }
+    /*
+    public static void main(String[] args) {
+        Connection conn = getConexion();
+        if(conn != null){
+            System.out.println("Conectado correctamente");
+        }else{
+            System.out.println("Error de conexion");
+        } 
+    } */
 }

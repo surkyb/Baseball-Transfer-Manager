@@ -102,6 +102,26 @@ public class ContratoRepositoryImpl implements ContratoRepository {
         // Despues de todo el proceso, devolvera el contrato buscado con todo sus datos
         return cont;
     }
+    @Override
+    public void actualizarEquipoJugador(int idJugador, int EquipoDestino){
+        String sql = "UPDATE contrato SET id_equipo = ? WHERE id_jugador = ?";
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)){
+            
+            ps.setInt(1, EquipoDestino);
+            ps.setInt(2, idJugador);
+            
+            int filas = ps.executeUpdate();
+            
+            if(filas > 0){
+                System.out.println("Equipo actualizado correctamente.");
+            }else{
+                System.out.println("No se encontró el jugador en contrato");
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     // utilizamos el override para sobreescribir el metodo cancelarContrato // 
     @Override

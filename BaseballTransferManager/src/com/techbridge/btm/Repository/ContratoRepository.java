@@ -18,6 +18,9 @@ public interface ContratoRepository {
     // Esto lo creamos para poder buscar un contrato por su id correspondiente
     Contrato buscarContrato(int idContrato);
     
+    //metodo para actualizar el equipo al que paso un jugador
+    void actualizarEquipoJugador(int idJugador, int EquipoDestino);
+    
     // Este otro metodo lo creamos para eliminar un contrato
     void cancelarContrato(int idContrato);
 

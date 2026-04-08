@@ -1,122 +1,167 @@
 package com.techbridge.btm.view;
 
+import com.techbridge.btm.view.components.PanelCover;
+import com.techbridge.btm.view.components.PanelLoginAndRegister;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import net.miginfocom.swing.MigLayout;
+import org.jdesktop.animation.timing.Animator;
+import org.jdesktop.animation.timing.TimingTarget;
+import org.jdesktop.animation.timing.TimingTargetAdapter;
+
+
 /**
- *
  * @author Surky
  */
-import com.techbridge.btm.controller.UsuarioController;
-import com.techbridge.btm.repository.UsuarioRepositoryImpl;
-import com.techbridge.btm.service.AuthService;
-
-import javax.swing.*;
-import java.awt.*;
-
-/**
- * @author Surky
- */
-public class LoginJFrame extends JFrame implements LoginViewInterface {
-
-    // 1. Declaramos los componentes visuales
-    private JTextField txtUsername;
-    private JTextField txtCorreo;
-    private JPasswordField txtPassword;
-    private JButton btnLogin;
-    private JButton btnRegistro;
-
-    private UsuarioController controller;
-
+public class LoginJFrame extends javax.swing.JFrame {
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
+    private MigLayout layout;
+    private PanelCover cover;
+    private PanelLoginAndRegister loginAndRegister;
+    private boolean isLogin = true;
+    private final double addSize = 30;
+    private final double coverSize = 40;
+    private final double loginSize = 60;
+    private final DecimalFormat df = new DecimalFormat("###0.###");
+    
     public LoginJFrame() {
-        // Configuraciones básicas de la ventana
-        setTitle("Baseball Team Manager - Acceso");
-        setSize(350, 250);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centrar en la pantalla
-        setResizable(false);
-
-        // 3. Inicializamos las dependencias del MVC
-        UsuarioRepositoryImpl repo = new UsuarioRepositoryImpl();
-        AuthService service = new AuthService(repo);
-        this.controller = new UsuarioController(service);
-
-        // 4. Construimos la interfaz gráfica
-        inicializarComponentes();
+        initComponents();
+        init();
     }
 
-    private void inicializarComponentes() {
-        JPanel panelPrincipal = new JPanel(new GridLayout(4, 2, 10, 15));
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Márgenes
+    private void init(){
+        layout = new MigLayout("fill, insets 0");
+        cover = new PanelCover();
+        loginAndRegister = new PanelLoginAndRegister() ;
+        TimingTarget target = new TimingTargetAdapter(){
+            @Override
+            public void timingEvent(float fraction) {
+                double fractionCover;
+                double fractionLogin;
+                double size = coverSize;
+                if (fraction <= 0.5f) {
+                    size += fraction * addSize;
+                } else {
+                    size += addSize - fraction * addSize;
+                }
+                if (isLogin) {
+                    fractionCover = 1f - fraction;
+                    fractionLogin = fraction;
+                    if (fraction>=0.5f) {
+                        cover.registerRight(fractionCover * 100);
+                    }else{
+                     cover.loginRight(fractionLogin * 100);
+                    }
+                    
+                }else{
+                    fractionCover = fraction;
+                    fractionLogin = 1f - fraction;
+                    if (fraction <= 0.5f) {
+                        cover.registerLeft(fraction * 100);
+                    }else {
+                        cover.loginLeft((1f - fraction) * 100);
+                    }
+                }
+                if (fraction >= 0.5f) {
+                    loginAndRegister.showRegister(isLogin);
+                }
+                fractionCover = Double.valueOf(df.format(fractionCover));
+                fractionLogin = Double.valueOf(df.format(fractionLogin));
+                layout.setComponentConstraints(cover, "width " + size + "%, pos "+ fractionCover + "al 0 n 100%");
+                layout.setComponentConstraints(loginAndRegister, "width " + loginSize + "%, pos " + fractionLogin + "al 0 n 100%");
+                bg.revalidate();
+            }
 
-        // Instanciamos las cajas de texto
-        txtUsername = new JTextField();
-        txtCorreo = new JTextField();
-        txtPassword = new JPasswordField();
+            @Override
+            public void end() {
+                isLogin = !isLogin; 
+            }
+            
+        }; 
+        Animator animator = new Animator(1000, target);
+        animator.setAcceleration(0.5f);
+        animator.setDeceleration(0.5f);
+        animator.setResolution(0);
+        bg.setLayout(layout);
+        bg.add(cover, "width " + coverSize + "%, pos " + (isLogin ? "1al" : "0al") + " 0 n 100%");
+        bg.add(loginAndRegister, "width " + loginSize + "%, pos " + (isLogin ? "0al" : "1al") + " 0 n 100%"); //  1al as 100%
+        loginAndRegister.showRegister(!isLogin);
+        cover.login(isLogin);
+        cover.addEvent(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(!animator.isRunning()){
+                    animator.start();  
+                }
+            }
+        });      
+     }
+    
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-        btnLogin = new JButton("Entrar");
-        btnRegistro = new JButton("Registrarse");
+        bg = new javax.swing.JLayeredPane();
 
-        panelPrincipal.add(new JLabel("Usuario:"));
-        panelPrincipal.add(txtUsername);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panelPrincipal.add(new JLabel("Correo (Solo Registro):"));
-        panelPrincipal.add(txtCorreo);
+        bg.setBackground(new java.awt.Color(255, 255, 255));
+        bg.setOpaque(true);
 
-        panelPrincipal.add(new JLabel("Contraseña:"));
-        panelPrincipal.add(txtPassword);
+        javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
+        bg.setLayout(bgLayout);
+        bgLayout.setHorizontalGroup(
+            bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 936, Short.MAX_VALUE)
+        );
+        bgLayout.setVerticalGroup(
+            bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 531, Short.MAX_VALUE)
+        );
 
-        panelPrincipal.add(btnLogin);
-        panelPrincipal.add(btnRegistro);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(bg)
+        );
 
-        // Agregamos el panel a la ventana
-        this.add(panelPrincipal);
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
 
-        // Cuando le den clic a Entrar llamamos al procesarLogin del controlador y le pasamos "this" (esta ventana)
-        btnLogin.addActionListener(e -> controller.procesarLogin(this));
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
 
-        // Cuando le den clic a Registrarse llamamos al procesarRegistro
-        btnRegistro.addActionListener(e -> controller.procesarRegistro(this));
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> new LoginJFrame().setVisible(true));
     }
 
-
-    @Override
-    public String getUsername() {
-        return txtUsername.getText();
-    }
-
-    @Override
-    public String getPassword() {
-        return new String(txtPassword.getPassword());
-    }
-
-    @Override
-    public String getCorreo() {
-        return txtCorreo.getText();
-    }
-
-    @Override
-    public void mostrarMensajeError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-    }
-
-    @Override
-    public void mostrarMensajeExito(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    @Override
-    public void limpiarCampos() {
-        txtUsername.setText("");
-        txtCorreo.setText("");
-        txtPassword.setText("");
-    }
-
-    @Override
-    public void cerrarVentana() {
-        this.dispose(); // Destruye esta ventana
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new LoginJFrame().setVisible(true);
-        });
-    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLayeredPane bg;
+    // End of variables declaration//GEN-END:variables
 }

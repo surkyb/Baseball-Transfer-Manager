@@ -25,6 +25,7 @@ public interface ContratoViewInterface {
     void mostrarMensajeError(String mensaje);
     void mostrarMensajeExito(String mensaje);
     
+    
     //para limpiar la pantalla después de una transferencia
     void limpiarCampos();
     

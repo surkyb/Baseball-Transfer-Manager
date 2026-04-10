@@ -35,6 +35,7 @@ public class ContratoController {
                 return;
             }
 
+            
             // Creamos los objetos necesrios
             Jugador jugador = new Jugador();
             jugador.setId(idJugador);

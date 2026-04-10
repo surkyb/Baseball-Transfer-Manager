@@ -15,6 +15,7 @@ import com.techbridge.btm.repository.ContratoRepositoryImpl;
  */
 public class ContratoService {
     
+    
     private ContratoRepository contratoRepository= new ContratoRepositoryImpl();
     
     

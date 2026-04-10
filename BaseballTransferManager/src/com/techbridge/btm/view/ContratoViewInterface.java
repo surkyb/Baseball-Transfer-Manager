@@ -27,4 +27,5 @@ public interface ContratoViewInterface {
     
     //para limpiar la pantalla después de una transferencia
     void limpiarCampos();
+    
 }

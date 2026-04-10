@@ -28,7 +28,7 @@ public class ContratoController {
             if (idJugador <= 0 || idEquipo <= 0) {
                 view.mostrarMensajeError("IDs invalidos");
                 return;
-            }
+}
 
             if (salario <= 0) {
                 view.mostrarMensajeError("El salario debe ser mayor a 0");

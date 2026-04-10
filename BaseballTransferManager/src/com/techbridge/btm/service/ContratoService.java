@@ -23,7 +23,7 @@ public class ContratoService {
         if (contrato.getJugador() == null || contrato.getEquipo() == null) {
             System.out.println("Datos inválidos");
             return;
-        }
+}
         contratoRepository.guardarContrato(contrato);
         System.out.println("Contrato guardado correctamente");
     }

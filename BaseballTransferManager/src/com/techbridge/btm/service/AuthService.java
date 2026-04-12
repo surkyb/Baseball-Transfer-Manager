@@ -6,8 +6,9 @@ import com.techbridge.btm.repository.UsuarioRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- *
- * @author Surky
+ * @author Surky 
+ * Servicio que contiene la lógica de autenticación. Maneja login
+ * y registro de usuarios.
  */
 public class AuthService {
 
@@ -17,7 +18,12 @@ public class AuthService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    //metodo que verifica el login, (si el usuaruio se necuentra en la bd)
+    /**
+     * Verifica si el login es válido.
+     * @param loginDTO
+     * @return true si el login es correcto
+     * @throws java.lang.Exception
+     */
     public boolean login(LoginDTO loginDTO) throws Exception {
         // busca el usuario en la BD 
         Usuario usuario = usuarioRepository.buscarPorEmail(loginDTO.getEmail());
@@ -33,6 +39,12 @@ public class AuthService {
         return true;
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * @param nuevoUsuario
+     * @return true;
+     * @throws java.lang.Exception
+     */
     public boolean registrarUsuario(Usuario nuevoUsuario) throws Exception {
 
         Usuario usuarioExistente = usuarioRepository.buscarPorUserName(nuevoUsuario.getUserName());
@@ -47,8 +59,8 @@ public class AuthService {
             throw new Exception("El correo ya está registrado.");
         }
 
+        // Encriptar contraseña
         String claveEncriptada = BCrypt.hashpw(nuevoUsuario.getContrasena(), BCrypt.gensalt());
-
         nuevoUsuario.setContrasena(claveEncriptada);
 
         usuarioRepository.guardarUsuario(nuevoUsuario);

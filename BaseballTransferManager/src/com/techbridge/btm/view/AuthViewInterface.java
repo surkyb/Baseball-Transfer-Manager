@@ -1,10 +1,13 @@
 package com.techbridge.btm.view;
 
 /**
+ * Interfaz que define la comunicación entre la vista (UI)
+ * y el controlador. Permite obtener datos del usuario
+ * y mostrar mensajes en pantalla.
+ * 
  * @author Surky
  */
 public interface AuthViewInterface {
-    //Esta interfaz le dirá al controlador qué cosas puede pedirle o mandarle a la pantalla
     
     // Para obtener los datos que escribió el usuario en el login
     String getLoginEmail();

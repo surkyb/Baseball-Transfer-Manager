@@ -13,11 +13,13 @@ import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 /**
+ * Ventana principal de autenticación (Login y Registro). Implementa la interfaz
+ * AuthViewInterface para comunicarse con el controlador.
+ *
  * @author Surky
  */
 public class LoginJFrame extends javax.swing.JFrame implements AuthViewInterface {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
     private MigLayout layout;
     private PanelCover cover;
     private PanelLoginAndRegister loginAndRegister;
@@ -28,12 +30,21 @@ public class LoginJFrame extends javax.swing.JFrame implements AuthViewInterface
     private final DecimalFormat df = new DecimalFormat("###0.###");
     private final UsuarioController usuarioController;
 
+    /**
+     * Constructor que recibe el controlador para manejar la lógica.
+     *
+     * @param controlador instancia del controlador de usuario
+     */
     public LoginJFrame(UsuarioController controlador) {
         this.usuarioController = controlador;
         initComponents();
         init();
     }
 
+    /**
+     * Inicializa la interfaz gráfica, configura las animaciones entre login y
+     * registro y asigna los eventos de los botones.
+     */
     private void init() {
         layout = new MigLayout("fill, insets 0");
         cover = new PanelCover();
@@ -100,6 +111,8 @@ public class LoginJFrame extends javax.swing.JFrame implements AuthViewInterface
                 }
             }
         });
+        // Evento del botón de login: llama al controlador
+        // para procesar el inicio de sesión
         loginAndRegister.addEventLogin(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -108,7 +121,8 @@ public class LoginJFrame extends javax.swing.JFrame implements AuthViewInterface
             }
 
         });
-        // 3. Conectas el botón de Registrarse
+        // Evento del botón de registro: llama al controlador
+        // para procesar el registro del usuario
         loginAndRegister.addEventRegister(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -154,78 +168,85 @@ public class LoginJFrame extends javax.swing.JFrame implements AuthViewInterface
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane bg;
     // End of variables declaration//GEN-END:variables
-/*
-    @Override
-    public String getLoginUsername() {
-        return loginAndRegister.getloginUsername();
-    }*/
+
+    /**
+     * Devuelve el email ingresado en el formulario de login.
+     * @return 
+     */
     @Override
     public String getLoginEmail() {
         return loginAndRegister.getLoginEmail();
     }
 
+    /**
+     * Devuelve la contraseña ingresada en el formulario de login.
+     * @return 
+     */
     @Override
     public String getLoginPassword() {
         return loginAndRegister.getLoginPassword();
     }
 
+    /**
+     * Muestra un mensaje de error en un cuadro de diálogo.
+     * @param mensaje
+     */
     @Override
     public void mostrarMensajeError(String mensaje) {
         javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error de Acceso", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Muestra un mensaje de éxito en un cuadro de diálogo.
+     * @param mensaje
+     */
     @Override
     public void mostrarMensajeExito(String mensaje) {
         JOptionPane.showMessageDialog(this, mensaje);
     }
 
+    /**
+     * Limpia todos los campos del formulario.
+     */
     @Override
     public void limpiarCampos() {
         loginAndRegister.limpiarTodosLosCampos();
     }
 
+    /**
+     * Cierra la ventana actual.
+     */
     @Override
     public void cerrarVentana() {
         this.dispose();
     }
 
+    /**
+     * Devuelve el nombre de usuario ingresado en el registro.
+     * @return 
+     */
     @Override
     public String getRegisterUsername() {
         return loginAndRegister.getRegisterUserName();
     }
 
+    /**
+     * Devuelve el email ingresado en el registro.
+     * @return 
+     */
     @Override
     public String getRegisterEmail() {
         return loginAndRegister.getRegisterEmail();
     }
 
+    /**
+     * Devuelve la contraseña ingresada en el registro.
+     * @return 
+     */
     @Override
     public String getRegisterPassword() {
         return loginAndRegister.getRegisterPassword();

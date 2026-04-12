@@ -6,6 +6,8 @@ import com.techbridge.btm.service.AuthService;
 import com.techbridge.btm.view.AuthViewInterface;
 
 /**
+ * Controlador encargado de manejar la lógica entre la vista y el servicio.
+ * Gestiona el login y el registro de usuarios.
  * @author Surky
  */
 public class UsuarioController {
@@ -16,6 +18,11 @@ public class UsuarioController {
         this.authService = authService;
     }
 
+    /**
+     * Procesa el login del usuario.
+     * Valida los campos, crea el DTO y delega al servicio.
+     * @param loginView vista que implementa la interfaz
+     */
     public void procesarLogin(AuthViewInterface loginView) {
         //validar si los campos están vacíos
         if (loginView.getLoginEmail().trim().isEmpty() || loginView.getLoginPassword().isEmpty()) {
@@ -31,6 +38,7 @@ public class UsuarioController {
         LoginDTO dto = new LoginDTO(loginView.getLoginEmail().trim(), loginView.getLoginPassword());
 
         try {
+            // Llamar al servicio
             if (authService.login(dto)) {
                 loginView.mostrarMensajeExito("Ha sido logeado satisfactoriamente");
                 loginView.cerrarVentana();
@@ -43,7 +51,11 @@ public class UsuarioController {
 
         }
     }
-
+    /**
+     * Procesa el registro de un nuevo usuario.
+     * Valida datos y delega al servicio.
+     * @param loginView vista que contiene los datos del registro
+     */
     public void procesarRegistro(AuthViewInterface loginView) {
         if (loginView.getRegisterUsername().trim().isEmpty()
                 || loginView.getRegisterEmail().trim().isEmpty()
@@ -69,18 +81,4 @@ public class UsuarioController {
             loginView.limpiarCampos();
         }
     }
-    // ver si el usuario existe, si no pues guardar el registro 
-
 }
-
-/*
-Extraiga el usuario y clave de la interfaz
-
-Cree el UsuarioDTO
-
-Llame al authService.login()
-
-Si ta redi, llame a mostrarMensajeExito() y cerrarVentana()
-
-Si falla  atrape la excepción y use mostrarMensajeError y limpiarCampo
-*/

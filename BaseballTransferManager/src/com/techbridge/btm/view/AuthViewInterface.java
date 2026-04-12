@@ -1,16 +1,20 @@
 package com.techbridge.btm.view;
 
 /**
- *
  * @author Surky
  */
-public interface LoginViewInterface {
+public interface AuthViewInterface {
     //Esta interfaz le dirá al controlador qué cosas puede pedirle o mandarle a la pantalla
     
-    // Para obtener los datos que escribió el usuario
-    String getUsername();
-    String getPassword();
-    String getCorreo();
+    // Para obtener los datos que escribió el usuario en el login
+    String getLoginEmail();
+    String getLoginPassword();
+    
+    //los datos que escribio en el register
+    String getRegisterUsername();
+    String getRegisterEmail();
+    String getRegisterPassword();
+    
     
     // Para mostrarle mensajes al usuario
     void mostrarMensajeError(String mensaje);

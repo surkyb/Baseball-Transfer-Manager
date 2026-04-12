@@ -20,37 +20,40 @@ public class AuthService {
     //metodo que verifica el login, (si el usuaruio se necuentra en la bd)
     public boolean login(LoginDTO loginDTO) throws Exception {
         // busca el usuario en la BD 
-        Usuario usuario = usuarioRepository.buscarPorUserName(loginDTO.getUsername());
-
+        Usuario usuario = usuarioRepository.buscarPorEmail(loginDTO.getEmail());
         if (usuario == null) {
-            throw new Exception("El usuario ingresado no existe en el sistema.");
+            throw new Exception("El correo ingresado no está registrado en el sistema.");
         }
         //contraseña de la bd vs la del login
         //checkpw recibe: (Contraseña escrita por el usuario, Hash guardado en la BD)
-        if(!BCrypt.checkpw(loginDTO.getPassword(), usuario.getContrasena())){
-        
+        if (!BCrypt.checkpw(loginDTO.getPassword(), usuario.getContrasena())) {
+
             throw new Exception("Contraseña incorrecta. Inténtalo de nuevo.");
         }
         return true;
     }
-    
+
     public boolean registrarUsuario(Usuario nuevoUsuario) throws Exception {
-        
+
         Usuario usuarioExistente = usuarioRepository.buscarPorUserName(nuevoUsuario.getUserName());
-        
-        if(usuarioExistente != null){
+
+        if (usuarioExistente != null) {
             throw new Exception("El nombre de usuario '" + nuevoUsuario.getUserName() + "' ya está en uso. Por favor, elige otro.");
         }
-        
-        String claveEncriptada = BCrypt.hashpw(nuevoUsuario.getContrasena(),BCrypt.gensalt());
-        
+
+        Usuario emailExistente = usuarioRepository.buscarPorEmail(nuevoUsuario.getCorreo());
+
+        if (emailExistente != null) {
+            throw new Exception("El correo ya está registrado.");
+        }
+
+        String claveEncriptada = BCrypt.hashpw(nuevoUsuario.getContrasena(), BCrypt.gensalt());
+
         nuevoUsuario.setContrasena(claveEncriptada);
-        
-        usuarioRepository.guardarUsuario(nuevoUsuario); 
-        
+
+        usuarioRepository.guardarUsuario(nuevoUsuario);
+
         return true;
     }
-  
 
- 
 }

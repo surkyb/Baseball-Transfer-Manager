@@ -1,4 +1,3 @@
-
 package com.techbridge.btm.view.components;
 
 import com.techbridge.btm.view.swing.ButtonOutLine;
@@ -16,10 +15,10 @@ import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 
 /**
- *
  * @author Surky
  */
 public class PanelCover extends javax.swing.JPanel {
+
     /**
      * Creates new form PanelCover
      */
@@ -63,7 +62,7 @@ public class PanelCover extends javax.swing.JPanel {
         });
         add(button, "w 60%, h 40");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -81,51 +80,52 @@ public class PanelCover extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
-    protected void paintComponent(Graphics graphics){
+    protected void paintComponent(Graphics graphics) {
         Graphics2D g2 = (Graphics2D) graphics;
         GradientPaint gra = new GradientPaint(0, 0, new Color(27, 58, 99), 0, getHeight(), new Color(23, 49, 82));
         g2.setPaint(gra);
         g2.fillRect(0, 0, getWidth(), getHeight());
         super.paintComponent(graphics);
-        
+
     }
-    public void addEvent(ActionListener event){
+
+    public void addEvent(ActionListener event) {
         this.event = event;
     }
-    
-    public void registerLeft(double v){
+
+    public void registerLeft(double v) {
         v = Double.valueOf(df.format(v));
         login(false);
         layout.setComponentConstraints(title, "pad 0 -" + v + "% 0 0");
         layout.setComponentConstraints(description, "pad 0 -" + v + "% 0 0");
         layout.setComponentConstraints(description1, "pad 0 -" + v + "% 0 0");
-        
+
     }
-    
-    public void registerRight(double v){
+
+    public void registerRight(double v) {
         v = Double.valueOf(df.format(v));
         login(false);
         layout.setComponentConstraints(title, "pad 0 -" + v + "% 0 0");
         layout.setComponentConstraints(description, "pad 0 -" + v + "% 0 0");
         layout.setComponentConstraints(description1, "pad 0 -" + v + "% 0 0");
     }
-    
-    public void loginLeft(double v){
+
+    public void loginLeft(double v) {
         v = Double.valueOf(df.format(v));
         login(true);
         layout.setComponentConstraints(title, "pad 0 " + v + "% 0 " + v + "%");
         layout.setComponentConstraints(description, "pad 0 " + v + "% 0 " + v + "%");
-        layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%"); 
+        layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%");
     }
-    
-    public void loginRight(double v){
+
+    public void loginRight(double v) {
         v = Double.valueOf(df.format(v));
         login(true);
         layout.setComponentConstraints(title, "pad 0 " + v + "% 0 " + v + "%");
         layout.setComponentConstraints(description, "pad 0 " + v + "% 0 " + v + "%");
-        layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%"); 
+        layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%");
     }
-    
+
     public void login(boolean login) {
         if (this.isLogin != login) {
             if (login) {
@@ -142,8 +142,6 @@ public class PanelCover extends javax.swing.JPanel {
             this.isLogin = login;
         }
     }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

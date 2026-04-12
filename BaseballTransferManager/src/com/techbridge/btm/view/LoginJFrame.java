@@ -1,21 +1,22 @@
 package com.techbridge.btm.view;
 
+import com.techbridge.btm.controller.UsuarioController;
 import com.techbridge.btm.view.components.PanelCover;
 import com.techbridge.btm.view.components.PanelLoginAndRegister;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import javax.swing.JOptionPane;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 
-
 /**
  * @author Surky
  */
-public class LoginJFrame extends javax.swing.JFrame {
-    
+public class LoginJFrame extends javax.swing.JFrame implements AuthViewInterface {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
     private MigLayout layout;
     private PanelCover cover;
@@ -25,17 +26,19 @@ public class LoginJFrame extends javax.swing.JFrame {
     private final double coverSize = 40;
     private final double loginSize = 60;
     private final DecimalFormat df = new DecimalFormat("###0.###");
-    
-    public LoginJFrame() {
+    private final UsuarioController usuarioController;
+
+    public LoginJFrame(UsuarioController controlador) {
+        this.usuarioController = controlador;
         initComponents();
         init();
     }
 
-    private void init(){
+    private void init() {
         layout = new MigLayout("fill, insets 0");
         cover = new PanelCover();
-        loginAndRegister = new PanelLoginAndRegister() ;
-        TimingTarget target = new TimingTargetAdapter(){
+        loginAndRegister = new PanelLoginAndRegister();
+        TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
                 double fractionCover;
@@ -49,18 +52,18 @@ public class LoginJFrame extends javax.swing.JFrame {
                 if (isLogin) {
                     fractionCover = 1f - fraction;
                     fractionLogin = fraction;
-                    if (fraction>=0.5f) {
+                    if (fraction >= 0.5f) {
                         cover.registerRight(fractionCover * 100);
-                    }else{
-                     cover.loginRight(fractionLogin * 100);
+                    } else {
+                        cover.loginRight(fractionLogin * 100);
                     }
-                    
-                }else{
+
+                } else {
                     fractionCover = fraction;
                     fractionLogin = 1f - fraction;
                     if (fraction <= 0.5f) {
                         cover.registerLeft(fraction * 100);
-                    }else {
+                    } else {
                         cover.loginLeft((1f - fraction) * 100);
                     }
                 }
@@ -69,17 +72,17 @@ public class LoginJFrame extends javax.swing.JFrame {
                 }
                 fractionCover = Double.valueOf(df.format(fractionCover));
                 fractionLogin = Double.valueOf(df.format(fractionLogin));
-                layout.setComponentConstraints(cover, "width " + size + "%, pos "+ fractionCover + "al 0 n 100%");
+                layout.setComponentConstraints(cover, "width " + size + "%, pos " + fractionCover + "al 0 n 100%");
                 layout.setComponentConstraints(loginAndRegister, "width " + loginSize + "%, pos " + fractionLogin + "al 0 n 100%");
                 bg.revalidate();
             }
 
             @Override
             public void end() {
-                isLogin = !isLogin; 
+                isLogin = !isLogin;
             }
-            
-        }; 
+
+        };
         Animator animator = new Animator(1000, target);
         animator.setAcceleration(0.5f);
         animator.setDeceleration(0.5f);
@@ -89,16 +92,31 @@ public class LoginJFrame extends javax.swing.JFrame {
         bg.add(loginAndRegister, "width " + loginSize + "%, pos " + (isLogin ? "0al" : "1al") + " 0 n 100%"); //  1al as 100%
         loginAndRegister.showRegister(!isLogin);
         cover.login(isLogin);
-        cover.addEvent(new ActionListener(){
+        cover.addEvent(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!animator.isRunning()){
-                    animator.start();  
+                if (!animator.isRunning()) {
+                    animator.start();
                 }
             }
-        });      
-     }
-    
+        });
+        loginAndRegister.addEventLogin(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                // El JFrame se pasa a sí mismo (this) porque él ES la interfaz AuthViewInterface
+                usuarioController.procesarLogin(LoginJFrame.this);
+            }
+
+        });
+        // 3. Conectas el botón de Registrarse
+        loginAndRegister.addEventRegister(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                usuarioController.procesarRegistro(LoginJFrame.this);
+            }
+        });
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -158,10 +176,59 @@ public class LoginJFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new LoginJFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane bg;
     // End of variables declaration//GEN-END:variables
+/*
+    @Override
+    public String getLoginUsername() {
+        return loginAndRegister.getloginUsername();
+    }*/
+    @Override
+    public String getLoginEmail() {
+        return loginAndRegister.getLoginEmail();
+    }
+
+    @Override
+    public String getLoginPassword() {
+        return loginAndRegister.getLoginPassword();
+    }
+
+    @Override
+    public void mostrarMensajeError(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje, "Error de Acceso", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void mostrarMensajeExito(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    @Override
+    public void limpiarCampos() {
+        loginAndRegister.limpiarTodosLosCampos();
+    }
+
+    @Override
+    public void cerrarVentana() {
+        this.dispose();
+    }
+
+    @Override
+    public String getRegisterUsername() {
+        return loginAndRegister.getRegisterUserName();
+    }
+
+    @Override
+    public String getRegisterEmail() {
+        return loginAndRegister.getRegisterEmail();
+    }
+
+    @Override
+    public String getRegisterPassword() {
+        return loginAndRegister.getRegisterPassword();
+    }
+
 }

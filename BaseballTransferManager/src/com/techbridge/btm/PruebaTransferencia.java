@@ -4,7 +4,10 @@
  */
 package com.techbridge.btm;
 
-import com.techbridge.btm.controller.TransferenciaController;
+import com.techbridge.btm.repository.ContratoRepository;
+import com.techbridge.btm.repository.ContratoRepositoryImpl;
+import com.techbridge.btm.repository.TransferenciaRepository;
+import com.techbridge.btm.repository.TransferenciaRepositoryImpl;
 import com.techbridge.btm.service.TransferenciaService;
 
 /**
@@ -12,10 +15,17 @@ import com.techbridge.btm.service.TransferenciaService;
  * @author Joshua Abreu
  */
 public class PruebaTransferencia {
+
     public static void main(String[] args) {
-        TransferenciaService service = new TransferenciaService();
-        service.transferirJugador(1, 1, 2, 500000);
-        
-        System.out.println("Prueba terminada. Revisar MySQL");
+        TransferenciaRepository transferenciaRepo = new TransferenciaRepositoryImpl();
+        ContratoRepository contratoRepo = new ContratoRepositoryImpl();
+
+        TransferenciaService service = new TransferenciaService(transferenciaRepo, contratoRepo);
+        try {
+            service.transferirJugador(1, 1, 2, 500000);
+            System.out.println("Prueba terminada. Revisar MySQL");
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

@@ -1,16 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.techbridge.btm.service;
 
 import com.techbridge.btm.model.Equipo;
 import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.model.Transferencia;
 import com.techbridge.btm.repository.ContratoRepository;
-import com.techbridge.btm.repository.ContratoRepositoryImpl;
 import com.techbridge.btm.repository.TransferenciaRepository;
-import com.techbridge.btm.repository.TransferenciaRepositoryImpl;
 import java.time.LocalDate;
 
 /**
@@ -19,19 +13,24 @@ import java.time.LocalDate;
  */
 public class TransferenciaService {
    
-    private TransferenciaRepository transferenciaRepository = new TransferenciaRepositoryImpl();
-    private ContratoRepository contratoRepository = new ContratoRepositoryImpl();
+    private final TransferenciaRepository transferenciaRepository;
+    private final ContratoRepository contratoRepository;
     
-    public void transferirJugador(int idJugador, int idEquipoOrigen, int idEquipoDestino, double monto){
+    public TransferenciaService(TransferenciaRepository transferenciaRepo, ContratoRepository contratoRepo) {
+        this.transferenciaRepository = transferenciaRepo;
+        this.contratoRepository = contratoRepo;
+    }
+    
+    public void transferirJugador(int idJugador, int idEquipoOrigen, int idEquipoDestino, double monto)throws Exception{
         
-        if(idEquipoOrigen == idEquipoDestino){
-            System.out.println("No puedes transferir al mismo equipo");
-            return;
+        
+        
+        if (idEquipoOrigen == idEquipoDestino) {
+            throw new Exception("No puedes transferir al mismo equipo");
         }
-        
-        if(monto <= 0){
-            System.out.println("Monto invalido");
-            return;
+
+        if (monto <= 0){
+            throw new Exception("El monto de transferencia debe ser mayor a 0");
         }
         //crear objeto jugador
         Jugador jugador = new Jugador();
@@ -58,8 +57,6 @@ public class TransferenciaService {
         
         //actualizar contrato
         contratoRepository.actualizarEquipoJugador(idJugador, idEquipoDestino);
-        
-        System.out.println("Transferencia completa realizada");
-        
+                
     } 
 }

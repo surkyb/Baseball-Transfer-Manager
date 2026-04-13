@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.techbridge.btm.controller;
 
-import com.techbridge.btm.model.Transferencia;
 import com.techbridge.btm.service.TransferenciaService;
 import com.techbridge.btm.view.TransferenciaViewInterface;
 /**
@@ -12,13 +7,14 @@ import com.techbridge.btm.view.TransferenciaViewInterface;
  * @author Joshua Abreu
  */
 public class TransferenciaController {
-    private TransferenciaService service;
-    private TransferenciaViewInterface view;
+    
+    private final TransferenciaService service;
+    private final TransferenciaViewInterface view;
     
     // constructor
-    public TransferenciaController(TransferenciaViewInterface view) {
+    public TransferenciaController(TransferenciaViewInterface view, TransferenciaService service) {
         this.view = view;
-        this.service = new TransferenciaService();
+        this.service = service;
     }
 
     // metodo principal conectado a la vista
@@ -46,22 +42,16 @@ public class TransferenciaController {
 
             // mensaje de exito
             view.mostrarMensajeExito("Transferencia realizada correctamente");
-
-           
             view.limpiarCampos();
 
         } catch (NumberFormatException e) {
-            view.mostrarMensajeError("Error en los datos ingresados");
-
+            view.mostrarMensajeError("Por favor, ingrese números válidos en los campos correspondientes.");
         } catch (Exception e) {
-            view.mostrarMensajeError("Error inesperado al realizar la transferencia");
-            e.printStackTrace();
+            view.mostrarMensajeError(e.getMessage());
         }
     }
-
-    // metodo opcional para pruebas o uso directo
-    public void transferirJugador(int idJugador, int idOrigen, int idDestino, double monto) {
+        // metodo opcional para pruebas o uso directo
+    public void transferirJugador(int idJugador, int idOrigen, int idDestino, double monto) throws Exception {
         service.transferirJugador(idJugador, idOrigen, idDestino, monto);
     }
 }
-    

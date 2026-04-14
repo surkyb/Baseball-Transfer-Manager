@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package com.techbridge.btm.view;
 
+import com.techbridge.btm.model.Contrato;
 import com.techbridge.btm.model.EstadoContrato;
-import java.time.LocalDate;
 
 /**
  *
@@ -16,10 +12,10 @@ public interface ContratoViewInterface {
     //para obtener los datos desde la vista
     int getIdJugador();
     int getIdEquipo();
-    LocalDate getFechaInicio();
-    LocalDate getFechaFin();
+    int getIdContrato();
     double getSalario();
     EstadoContrato getEstadoContrato();
+    void mostrarDetallesContrato(Contrato contrato);
     
     //para mostrarle mensajes al usuario
     void mostrarMensajeError(String mensaje);

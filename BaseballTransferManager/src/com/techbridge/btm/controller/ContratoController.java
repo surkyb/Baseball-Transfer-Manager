@@ -1,116 +1,93 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.techbridge.btm.controller;
 
 import com.techbridge.btm.model.Contrato;
-import com.techbridge.btm.model.Equipo;
-import com.techbridge.btm.model.EstadoContrato;
-import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.service.ContratoService;
 import com.techbridge.btm.view.ContratoViewInterface;
-import java.time.LocalDate;
 
 /**
  *
  * @author gilber
  */
 public class ContratoController {
-    
-    private ContratoService contratoService = new ContratoService();
-    private ContratoViewInterface view;
-    
-    public void crearContrato(int idJugador, int idEquipo, double salario) {
 
+    private final ContratoService contratoService;
+    private final ContratoViewInterface view;
+
+    public ContratoController(ContratoService contratoService, ContratoViewInterface view) {
+        this.view = view;
+        this.contratoService = contratoService;
+    }
+
+    public void crearContrato() {
         try {
+
+            //pasando datos de la vista
+            int idJugador = view.getIdJugador();
+            int idEquipo = view.getIdEquipo();
+            double salario = view.getSalario();
+
             // Validaciones básicas
             if (idJugador <= 0 || idEquipo <= 0) {
                 view.mostrarMensajeError("IDs invalidos");
                 return;
-}
+            }
 
             if (salario <= 0) {
                 view.mostrarMensajeError("El salario debe ser mayor a 0");
                 return;
             }
 
-            
-            // Creamos los objetos necesrios
-            Jugador jugador = new Jugador();
-            jugador.setId(idJugador);
-
-            Equipo equipo = new Equipo();
-            equipo.setIdEquipo(idEquipo);
-
-            Contrato contrato = new Contrato();
-            contrato.setJugador(jugador);
-            contrato.setEquipo(equipo);
-            contrato.setSalario(salario);
-            contrato.setFechaInicio(LocalDate.now());
-            contrato.setFechaFin(null);
-            contrato.setEstadoContrato(EstadoContrato.ACTIVO);
-
-            // Llamar al service
-            contratoService.crearContrato(contrato);
-
-            // Mensaje de éxito
-            view.mostrarMensajeExito("Contrato creado con exito");
-            
+            //pasando los datos crudos al service
+            contratoService.crearContrato(idJugador, idEquipo, salario);
+            view.mostrarMensajeExito("Contrato creado con éxito");
             view.limpiarCampos();
-
+            
         } catch (IllegalArgumentException e) {
-
-            view.mostrarMensajeError("Error en los datos");
-
+            view.mostrarMensajeError("Por favor ingrese números válidos.");
         } catch (Exception e) {
-
-            view.mostrarMensajeError("Error inesperado al realizar el contrato");
-            e.printStackTrace();
+            view.mostrarMensajeError(e.getMessage());
         }
     }
 
-    
-
-    
-    public Contrato buscarContrato(int idContrato) {
+    public void buscarContrato() {
 
         try {
+            int idContrato = view.getIdContrato();
+
             if (idContrato <= 0) {
                 view.mostrarMensajeError("Id invalido");
+                return;
             }
 
-            return contratoService.buscarContrato(idContrato);
+            Contrato contrato = contratoService.buscarContrato(idContrato);
+            if (contrato != null) {
+                view.mostrarDetallesContrato(contrato);
+                view.mostrarMensajeExito("Contrato encontrado");
+            } else {
+                view.mostrarMensajeError("No se encontró el contrato");
+            }
 
         } catch (Exception e) {
-
-            view.mostrarMensajeError("Error inesperado al realizar la busqueda");
-            e.printStackTrace();
-            return null;
+            view.mostrarMensajeError(e.getMessage()); 
         }
     }
 
-   
-    public void cancelarContrato(int idContrato) {
-
+    public void cancelarContrato() {
         try {
+            int idContrato = view.getIdContrato();
             if (idContrato <= 0) {
                 view.mostrarMensajeError("Id invalido");
                 return;
             }
 
             contratoService.cancelarContrato(idContrato);
-
-            view.mostrarMensajeExito("Contrato eliminado correctamente");
-
+            view.mostrarMensajeExito("Contrato cancelado correctamente");
+            view.limpiarCampos();
+            
         } catch (IllegalArgumentException e) {
-
             view.mostrarMensajeError("Error en los datos ingresados");
-
         } catch (Exception e) {
-
-            view.mostrarMensajeError("Error inesperado al realizar la cancelacion");
+            view.mostrarMensajeError("Ocurrió un error inesperado."); 
         }
     }
 }
-

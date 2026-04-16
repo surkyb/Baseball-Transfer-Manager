@@ -4,10 +4,20 @@
  */
 package com.techbridge.btm.view;
 
+import com.techbridge.btm.DTO.EquipoDTO;
+
 /**
  *
  * @author Joshua Abreu
  */
-public class EquipoViewInterface {
+public interface EquipoViewInterface {
+    //obtener datos mediante DTO
+    EquipoDTO getDatosEquipo();
     
+    //mostrar resultados
+    void mostrarMensaje(String mensaje);
+    void mostrarError(String mensaje);
+    
+    //limpiar campos
+    void limpiarCampos();
 }

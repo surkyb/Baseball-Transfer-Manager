@@ -14,105 +14,75 @@ import java.util.ArrayList;
  */
 public class EquipoService {
 
-    /* * 1. LA CONEXIÓN (El Puente)
-     * Declaramos una variable inmutable (final) del tipo EquipoRepository.
-     * Esta variable es nuestro "cable" directo hacia la capa de la base de datos.
-     * Usamos la 'interfaz' (EquipoRepository) en lugar de la implementación directa 
-     * para mantener el código limpio y seguro.
-     */
     private final EquipoRepository equipoRepo;
 
-    /* * 2. EL CONSTRUCTOR (El Motor de Arranque)
-     * Este método se ejecuta automáticamente cuando alguien crea un "EquipoService".
-     * Aquí le damos vida a nuestra variable, conectándola con la implementación real
-     * (EquipoRepositoryImpl) que es la que tiene las consultas SQL. (Necesario)
+    /**
+     * Inyección de Dependencias por Constructor.
+     * Permite que el Service reciba cualquier implementación de EquipoRepository.
      */
-    public EquipoService() {
-        this.equipoRepo = new EquipoRepositoryImpl();
+    public EquipoService(EquipoRepository equipoRepo) {
+        this.equipoRepo = equipoRepo;
     }
 
-    /*
-     * 3. MÉTODO: REGISTRAR EQUIPO
-     * Recibe un objeto 'Equipo' completo desde la pantalla visual (el frontend).
-     */
-    public void registrarEquipo(Equipo equip) throws Exception {
-        
-        // REGLA DE NEGOCIO 1: Auditoría forense de datos.
-        // Validamos que el frontend no nos esté enviando un equipo fantasma (nulo).
-        // Si es nulo, detenemos el proceso lanzando una Excepción (error controlado) para que el programa no colapse.
-        if (equip == null) {
-            throw new Exception("El equipo no puede estar vacío.");
+    // Valida y registra un nuevo equipo en el sistema.
+    public void registrarEquipo(String nombre, double presupuesto) throws Exception {
+        // Validamos que el nombre no sea nulo ni esté compuesto solo por espacios.
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new Exception("El nombre no puede estar vacío");
         }
+
+        if (presupuesto <= 0) {
+            throw new Exception("El presupuesto debe ser mayor a 0");
+        }
+
+        // Mapeo: Creamos el objeto Modelo (Entity) a partir de los datos recibidos.
+        Equipo equipo = new Equipo();
+        equipo.setNombre(nombre);
+        equipo.setPresupuesto(presupuesto);
         
-        // Si pasa la barrera de seguridad, le damos la orden al Repositorio para que lo guarde en SQL.
-        equipoRepo.guardarEquipo(equip);
+        // Delegamos la persistencia al repositorio.
+        equipoRepo.guardarEquipo(equipo);
     }
 
-    /*
-     * 4. MÉTODO: OBTENER EQUIPO
-     * Recibe un texto (el nombre del equipo) y devuelve el objeto Equipo con todos sus datos.
-     */
+    // Busca un equipo por su nombre exacto.
     public Equipo obtenerEquipo(String nombre) throws Exception {
-        
-        // REGLA DE NEGOCIO 2: Filtro antisabotaje.
-        // Verificamos si el nombre viene nulo o si solo enviaron espacios en blanco (.trim().isEmpty()).
-        // Evitamos hacer una búsqueda inútil en la base de datos.
+
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new Exception("Debes proporcionar un nombre válido para buscar.");
+            throw new Exception("Nombre inválido");
         }
-        
-        // Ordenamos al Repositorio que busque el equipo en la base de datos y lo guardamos en una variable.
-        Equipo equipoEncontrado = equipoRepo.buscarEquipo(nombre);
-        
-        // REGLA DE NEGOCIO 3: Validación de existencia.
-        // Si el repositorio no encontró nada, devuelve 'null'. Debemos avisarle al usuario.
-        if (equipoEncontrado == null) {
-            throw new Exception("No existe ningún equipo registrado con el nombre: " + nombre);
+
+        Equipo equipo = equipoRepo.buscarEquipo(nombre);
+        // Si el repositorio devuelve null, lanzamos una excepción controlada.
+        if (equipo == null) {
+            throw new Exception("Equipo no encontrado");
         }
-        
-        // Si todo salió bien, devolvemos el equipo encontrado.
-        return equipoEncontrado;
+
+        return equipo;
     }
 
-    /*
-     * 5. MÉTODO: DESTRUIR EQUIPO
-     * Recibe un nombre y elimina el registro de la base de datos.
-     */
-    public void destruirEquipo(String nombre) throws Exception {
-        
-        // Validamos nuevamente que el nombre no sea basura o espacios en blanco.
+    // Elimina un equipo tras verificar su existencia.
+    public void eliminarEquipo(String nombre) throws Exception {
+
         if (nombre == null || nombre.trim().isEmpty()) {
-            throw new Exception("Nombre inválido. Operación cancelada.");
+            throw new Exception("Nombre inválido");
         }
-        
-        // REGLA DE NEGOCIO 4: Doble verificación cruzada.
-        // Antes de intentar borrar, verificamos lógicamente si el equipo realmente existe.
-        // Reutilizamos el método de búsqueda del repositorio para confirmar.
-        Equipo equipoExistente = equipoRepo.buscarEquipo(nombre);
-        
-        // Si no existe, bloqueamos la acción para no enviar una consulta SQL de borrado que fallará.
-        if (equipoExistente == null) {
-            throw new Exception("El equipo que intentas eliminar no existe en la base de datos.");
+        // Verificamos existencia antes de intentar borrar.
+        Equipo equipo = equipoRepo.buscarEquipo(nombre);
+
+        if (equipo == null) {
+            throw new Exception("El equipo no existe");
         }
 
-        // Si existe, damos la orden de ejecución final.
         equipoRepo.eliminarEquipo(nombre);
     }
 
-    /*
-     * 6. MÉTODO: OBTENER ROSTER (Lista de jugadores)
-     * Recibe el ID numérico de un equipo y devuelve una lista (ArrayList) llena de objetos 'Jugador'.
-     */
+    // Obtiene la lista de jugadores (roster) asociados a un equipo específico.
     public ArrayList<Jugador> obtenerRoster(int idEquipo) throws Exception {
-        
-        // REGLA DE NEGOCIO 5: Lógica básica.
-        // En bases de datos, los IDs autoincrementables empiezan en 1. 
-        // Si nos envían un 0 o un número negativo, es un dato corrupto. Lo bloqueamos.
+
         if (idEquipo <= 0) {
-            throw new Exception("El ID del equipo es corrupto o inválido.");
+            throw new Exception("ID inválido");
         }
-        
-        // Solicitamos la lista al repositorio y la devolvemos directamente.
+        //Retornamos la lista obtenida desde el repositorio
         return equipoRepo.buscarPorEquipo(idEquipo);
     }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.techbridge.btm.model;
 
 import java.time.LocalDate;
@@ -11,9 +7,9 @@ import java.time.LocalDate;
  * @author Surky
  */
 public class Transferencia {
-    
+
     private int idTransferencia;
-    private int idJugador;
+    private Jugador jugador;
     private Equipo equipoOrigen;
     private Equipo equipoDestino;
     private double monto;
@@ -22,9 +18,9 @@ public class Transferencia {
     public Transferencia() {
     }
 
-    public Transferencia(int idTransferencia, int idJugador, Equipo equipoOrigen, Equipo equipoDestino, double monto, LocalDate fecha) {
+    public Transferencia(int idTransferencia, Jugador jugador, Equipo equipoOrigen, Equipo equipoDestino, double monto, LocalDate fecha) {
         this.idTransferencia = idTransferencia;
-        this.idJugador = idJugador;
+        this.jugador = jugador;
         this.equipoOrigen = equipoOrigen;
         this.equipoDestino = equipoDestino;
         this.monto = monto;
@@ -39,12 +35,12 @@ public class Transferencia {
         this.idTransferencia = idTransferencia;
     }
 
-    public int getIdJugador() {
-        return idJugador;
+    public Jugador getJugador() {
+        return jugador;
     }
 
-    public void setIdJugador(int idJugador) {
-        this.idJugador = idJugador;
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
     }
 
     public Equipo getEquipoOrigen() {
@@ -78,5 +74,5 @@ public class Transferencia {
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
-    
+
 }

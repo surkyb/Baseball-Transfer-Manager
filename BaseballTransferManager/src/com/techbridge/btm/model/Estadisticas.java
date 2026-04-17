@@ -6,26 +6,51 @@ package com.techbridge.btm.model;
 
 /**
  *
- * @author UserGPC
+ * @author surky
  */
 public class Estadisticas {
     
+    private int idEstadisticas;
+    private int idJugador;
     private int juegos;
     private int hits;
     private int homeRuns;
     private int rbis;
     private double promedioBateo;
+    private int turnosAlBate;
+    private int baseXBola;
+    private int ponches;
+    private int basesRobadas;
+    private int carrerasAnotadas;
+    
+    
+    
 
     public Estadisticas() {
     }
 
-    public Estadisticas(int juegos, int hits, int homeRuns, int rbis, double promedioBateo) {
+    public Estadisticas(int idEstadisticas, int juegos, int hits, int homeRuns, int rbis, double promedioBateo, int turnosAlBate, int baseXBola, int ponches, int basesRobadas, int carrerasAnotadas) {
+        this.idEstadisticas = idEstadisticas;
         this.juegos = juegos;
         this.hits = hits;
         this.homeRuns = homeRuns;
         this.rbis = rbis;
         this.promedioBateo = promedioBateo;
+        this.turnosAlBate = turnosAlBate;
+        this.baseXBola = baseXBola;
+        this.ponches = ponches;
+        this.basesRobadas = basesRobadas;
+        this.carrerasAnotadas = carrerasAnotadas;
     }
+
+    public int getIdJugador() {
+        return idJugador;
+    }
+
+    public void setIdJugador(int idJugador) {
+        this.idJugador = idJugador;
+    }
+
 
     public int getJuegos() {
         return juegos;
@@ -67,6 +92,54 @@ public class Estadisticas {
         this.promedioBateo = promedioBateo;
     }
 
+    public int getIdEstadisticas() {
+        return idEstadisticas;
+    }
+
+    public void setIdEstadisticas(int idEstadisticas) {
+        this.idEstadisticas = idEstadisticas;
+    }
+
+    public int getTurnosAlBate() {
+        return turnosAlBate;
+    }
+
+    public void setTurnosAlBate(int turnosAlBate) {
+        this.turnosAlBate = turnosAlBate;
+    }
+
+    public int getBaseXBola() {
+        return baseXBola;
+    }
+
+    public void setBaseXBola(int baseXBola) {
+        this.baseXBola = baseXBola;
+    }
+
+    public int getPonches() {
+        return ponches;
+    }
+
+    public void setPonches(int ponches) {
+        this.ponches = ponches;
+    }
+
+    public int getBasesRobadas() {
+        return basesRobadas;
+    }
+
+    public void setBasesRobadas(int basesRobadas) {
+        this.basesRobadas = basesRobadas;
+    }
+
+    public int getCarrerasAnotadas() {
+        return carrerasAnotadas;
+    }
+
+    public void setCarrerasAnotadas(int carrerasAnotadas) {
+        this.carrerasAnotadas = carrerasAnotadas;
+    }
+    
     
     
 }

@@ -2,7 +2,6 @@
 *.class
 
 # Package files
-*.jar
 *.war
 *.ear
 
@@ -13,7 +12,7 @@
 /nbdist/
 
 # NetBeans private settings
-/nbproject/private/
+/nbproject/
 
 # Temporary files
 *.log

@@ -11,9 +11,6 @@
 /nbbuild/
 /nbdist/
 
-# NetBeans private settings
-/nbproject/
-
 # Temporary files
 *.log
 *.tmp

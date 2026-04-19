@@ -20,6 +20,8 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class ButtonMenu extends JButton {
 
+    private boolean over;
+    
     public Color getEffectColor() {
         return effectColor;
     }
@@ -42,7 +44,22 @@ public class ButtonMenu extends JButton {
         setBackground(new Color(43, 44, 75));
         setForeground(new Color(250, 250, 250));
         setCursor(new Cursor(Cursor.HAND_CURSOR));
-        addMouseListener(new MouseAdapter() {
+            addMouseListener(new MouseAdapter() {
+            // ✅ NUEVO: Cuando el ratón ENTRA al botón
+            @Override
+            public void mouseEntered(MouseEvent me) {
+                over = true;
+                repaint(); // Obliga al botón a redibujarse con el nuevo color
+            }
+
+            // ✅ NUEVO: Cuando el ratón SALE del botón
+            @Override
+            public void mouseExited(MouseEvent me) {
+                over = false;
+                repaint(); // Obliga al botón a borrar el color
+            }
+
+            // (Tu código actual del clic se queda igual)
             @Override
             public void mousePressed(MouseEvent me) {
                 targetSize = Math.max(getWidth(), getHeight()) * 2;
@@ -89,12 +106,12 @@ public class ButtonMenu extends JButton {
 
     @Override
     public void paint(Graphics grphcs) {
-        if (isSelected()) {
+        if (isSelected() || over ) {
             int width = getWidth();
             int height = getHeight();
             Graphics2D g2 = (Graphics2D) grphcs.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(new Color(25, 25, 25));
+            g2.setColor(new Color(255, 255, 255, 30));
             g2.fillRoundRect(0, 0, width - 1, height - 1, 10, 10);
         }
         super.paint(grphcs);

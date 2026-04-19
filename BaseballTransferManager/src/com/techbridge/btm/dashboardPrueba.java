@@ -1,8 +1,8 @@
 package com.techbridge.btm;
 
-import com.raven.form.Form;
-import com.raven.form.Form_1;
 import com.techbridge.btm.view.event.EventMenu;
+import com.techbridge.btm.view.form.Form;
+import com.techbridge.btm.view.form.FormJugadores;
 import java.awt.Color;
 import java.awt.Component;
 
@@ -17,6 +17,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
     /**
      * Creates new form dashboardPrueba
      */
+   
     public dashboardPrueba() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
@@ -26,7 +27,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
             public void selected(int index) {
 
                 if (index == 0) {
-                    showForm(new Form_1());
+                    showForm(new FormJugadores());
                 } else if (index == 8) {
                     System.out.println("Logout");
                 } else {
@@ -37,16 +38,18 @@ public class dashboardPrueba extends javax.swing.JFrame {
         };
 
         miMenu2.initMenu(event);
-        showForm(new Form_1());
+        showForm(new FormJugadores());
 
     }
-
         private void showForm(Component com) {
         body.removeAll();
         body.add(com);
         body.revalidate();
         body.repaint();
     }
+        
+    
+    
 
 
     @SuppressWarnings("unchecked")
@@ -55,14 +58,20 @@ public class dashboardPrueba extends javax.swing.JFrame {
 
         roundPanel1 = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
         header1 = new com.techbridge.btm.view.components.Header();
-        miMenu2 = new com.techbridge.btm.view.components.miMenu();
+        miMenu2 = new com.techbridge.btm.view.components.Menu();
         body = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
 
-        roundPanel1.setBackground(new java.awt.Color(21, 21, 21));
+        roundPanel1.setBackground(new java.awt.Color(243, 241, 241));
 
+        header1.setBackground(new java.awt.Color(255, 255, 255));
+
+        body.setBackground(new java.awt.Color(255, 255, 255));
+        body.setForeground(new java.awt.Color(0, 0, 0));
+        body.setToolTipText("");
         body.setOpaque(false);
         body.setLayout(new java.awt.BorderLayout());
 
@@ -70,36 +79,36 @@ public class dashboardPrueba extends javax.swing.JFrame {
         roundPanel1.setLayout(roundPanel1Layout);
         roundPanel1Layout.setHorizontalGroup(
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 1371, Short.MAX_VALUE)
+            .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(miMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+                .addContainerGap()
+                .addComponent(miMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(body, javax.swing.GroupLayout.PREFERRED_SIZE, 1071, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         roundPanel1Layout.setVerticalGroup(
             roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel1Layout.createSequentialGroup()
                 .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(miMenu2, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE)
-                    .addComponent(body, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(body, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(miMenu2, javax.swing.GroupLayout.PREFERRED_SIZE, 625, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(roundPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 19, Short.MAX_VALUE))
         );
 
         pack();
@@ -134,7 +143,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel body;
     private com.techbridge.btm.view.components.Header header1;
-    private com.techbridge.btm.view.components.miMenu miMenu2;
+    private com.techbridge.btm.view.components.Menu miMenu2;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel roundPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,4 +19,12 @@ public interface JugadorRepository {
     //metodo para mas adelante poder mostrar todos los jugadores en la tabla jugadores del swing
     java.util.List<Jugador> listarTodos();
     
+    //metodo para hacer un jugador agente libre
+    void liberarJugador(String nombreJugador) throws Exception;
+    //metodo para asignar un equipo
+    void asignarEquipo(String nombreJugador, String nombreEquipo, String salario, String fInicio, String fFin) throws Exception;
+    //metodo para renovar un contrato
+    void renovarContrato(String nombreJugador, String nuevoSalario, String nuevaFechaFin) throws Exception;
+    
+    String obtenerDetallesJugador(String nombreJugador) throws Exception;
 }

@@ -4,7 +4,7 @@ import com.techbridge.btm.model.Jugador;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
-
+import java.sql.SQLException;
 
 /**
  *
@@ -132,5 +132,119 @@ public class JugadorRepositoryImpl implements JugadorRepository {
             e.printStackTrace();
         }
         return lista;
+    }
+    
+    @Override
+    public void liberarJugador(String nombreJugador) throws Exception {
+        // Esta consulta busca el contrato activo del jugador y le cambia el estado
+        // (Usando una subconsulta para encontrar el ID del jugador por su nombre)
+        String sql = "UPDATE Contrato SET id_estado_contrato = ? WHERE id_jugador = (SELECT id FROM Jugador WHERE nombre = ?)";
+        
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            // AQUI hay un detalle clave: el número 2 representa el estado "Terminado" o "Agente Libre"
+            ps.setInt(1, 2); 
+            ps.setString(2, nombreJugador);
+            
+            int filasAfectadas = ps.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                throw new Exception("No se encontró un contrato activo para este jugador.");
+            }
+            
+        } catch (SQLException e) {
+            throw new Exception("Error en la base de datos al liberar jugador: " + e.getMessage());
+        }
+    }
+    @Override
+    public void asignarEquipo(String nombreJugador, String nombreEquipo, String salario, String fInicio, String fFin) throws Exception {
+        String sql = "INSERT INTO Contrato (id_jugador, id_equipo, id_estado_contrato, fecha_inicio, fecha_fin, salario) " +
+                     "VALUES ((SELECT id FROM Jugador WHERE nombre = ?), " +
+                     "(SELECT id FROM Equipo WHERE nombre = ?), 1, ?, ?, ?)";
+
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nombreJugador);
+            ps.setString(2, nombreEquipo);
+            ps.setString(3, fInicio);
+            ps.setString(4, fFin);
+            ps.setDouble(5, Double.parseDouble(salario));
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new Exception("Error al registrar el contrato: " + e.getMessage());
+        }
+    }
+    @Override
+    public void renovarContrato(String nombreJugador, String nuevoSalario, String nuevaFechaFin) throws Exception {
+        // Actualizamos el salario y la fecha de fin del contrato activo del jugador
+        String sql = "UPDATE Contrato SET salario = ?, fecha_fin = ? " +
+                     "WHERE id_estado_contrato = 1 AND id_jugador = (SELECT id FROM Jugador WHERE nombre = ?)";
+        
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setDouble(1, Double.parseDouble(nuevoSalario));
+            ps.setString(2, nuevaFechaFin);
+            ps.setString(3, nombreJugador);
+            
+            int filasAfectadas = ps.executeUpdate();
+            
+            if (filasAfectadas == 0) {
+                throw new Exception("El jugador no tiene un contrato activo para renovar.");
+            }
+            
+        } catch (SQLException e) {
+            throw new Exception("Error en la base de datos al renovar: " + e.getMessage());
+        }
+    }
+    @Override
+    public String obtenerDetallesJugador(String nombreJugador) throws Exception {
+        // Hacemos JOIN con Contrato, Equipo y Estadisticas
+        String sql = "SELECT e.nombre as equipo, c.salario, c.fecha_fin, " +
+                     "est.juegos, est.home_runs, est.promedio_bateo " +
+                     "FROM Jugador j " +
+                     "LEFT JOIN Contrato c ON j.id = c.id_jugador AND c.id_estado_contrato = 1 " +
+                     "LEFT JOIN Equipo e ON c.id_equipo = e.id " +
+                     "LEFT JOIN Estadisticas est ON j.id = est.id_jugador " +
+                     "WHERE j.nombre = ?";
+
+        StringBuilder detalles = new StringBuilder();
+        detalles.append("=== Perfil del Jugador: ").append(nombreJugador).append(" ===\n\n");
+
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nombreJugador);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String equipo = rs.getString("equipo");
+                double salario = rs.getDouble("salario");
+                java.sql.Date fechaFin = rs.getDate("fecha_fin");
+                
+                // Si las estadísticas son nulas, la BD devolverá 0 por defecto para los enteros
+                int juegos = rs.getInt("juegos");
+                int hr = rs.getInt("home_runs");
+                double avg = rs.getDouble("promedio_bateo");
+
+                detalles.append("ESTADO ACTUAL\n");
+                detalles.append("Equipo: ").append(equipo != null ? equipo : "Agente Libre").append("\n");
+                detalles.append("Salario: $").append(salario > 0 ? salario : "No aplica").append("\n");
+                detalles.append("Fin de contrato: ").append(fechaFin != null ? fechaFin.toString() : "No aplica").append("\n\n");
+
+                detalles.append("ESTADÍSTICAS\n");
+                detalles.append("- Juegos jugados: ").append(juegos).append("\n");
+                detalles.append("- Home Runs: ").append(hr).append("\n");
+                detalles.append("- Promedio de Bateo: ").append(avg);
+            } else {
+                throw new Exception("Jugador no encontrado en la base de datos.");
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error al consultar la base de datos: " + e.getMessage());
+        }
+        return detalles.toString();
     }
 }

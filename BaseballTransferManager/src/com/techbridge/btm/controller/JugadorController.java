@@ -44,4 +44,20 @@ public class JugadorController {
     public java.util.List<Jugador> listarTodosLosJugadores() {
         return service.listarTodosLosJugadores();
     }
+    //metodo para hacer agente libre un jugador
+    public void liberarJugador(String nombreJugador) throws Exception {
+        service.liberarJugador(nombreJugador);
+    }
+    
+    public void asignarEquipo(String nombreJugador, String nombreEquipo, String salario, String fInicio, String fFin) throws Exception {
+        service.asignarEquipo(nombreJugador, nombreEquipo, salario, fInicio, fFin);
+    }
+    
+    public void renovarContrato(String nombreJugador, String nuevoSalario, String nuevaFechaFin) throws Exception {
+        service.renovarContrato(nombreJugador, nuevoSalario, nuevaFechaFin);
+    }
+    
+    public String obtenerDetallesJugador(String nombreJugador) throws Exception {
+        return service.obtenerDetallesJugador(nombreJugador);
+    }
 }

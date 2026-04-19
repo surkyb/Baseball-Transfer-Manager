@@ -71,4 +71,20 @@ public class JugadorService {
         // retornamos lo que da la base de datos.
         return jugadorRepository.listarTodos();
     }
+    
+    public void liberarJugador(String nombreJugador) throws Exception {
+        jugadorRepository.liberarJugador(nombreJugador);
+    }
+    
+    public void asignarEquipo(String nombreJugador, String nombreEquipo, String salario, String fInicio, String fFin) throws Exception {
+        jugadorRepository.asignarEquipo(nombreJugador, nombreEquipo, salario, fInicio, fFin);
+    }
+    
+    public void renovarContrato(String nombreJugador, String nuevoSalario, String nuevaFechaFin) throws Exception {
+        jugadorRepository.renovarContrato(nombreJugador, nuevoSalario, nuevaFechaFin);
+    }
+    
+    public String obtenerDetallesJugador(String nombreJugador) throws Exception {
+        return jugadorRepository.obtenerDetallesJugador(nombreJugador);
+    }
 }

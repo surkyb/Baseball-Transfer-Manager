@@ -67,4 +67,8 @@ public class JugadorService {
         }
         jugadorRepository.eliminar(nombre);
     }
+    public java.util.List<Jugador> listarTodosLosJugadores() {
+        // retornamos lo que da la base de datos.
+        return jugadorRepository.listarTodos();
+    }
 }

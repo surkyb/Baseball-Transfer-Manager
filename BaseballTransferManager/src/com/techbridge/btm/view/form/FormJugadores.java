@@ -43,7 +43,6 @@ public class FormJugadores extends javax.swing.JPanel {
             public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                
                 setBackground(new java.awt.Color(33, 83, 126));
                 setForeground(java.awt.Color.WHITE);
 
@@ -56,8 +55,52 @@ public class FormJugadores extends javax.swing.JPanel {
                 return this;
             }
         });
-    }
 
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Obtenemos exactamente en qué fila y columna se hizo el clic
+                int filaAfectada = jTable1.rowAtPoint(evt.getPoint());
+                int columnaAfectada = jTable1.columnAtPoint(evt.getPoint());
+
+                if (columnaAfectada == 7 && filaAfectada >= 0) {
+
+                    //  tomsmos el valor de la celda 
+                    Object valorCelda = jTable1.getValueAt(filaAfectada, 1);
+                    // si ta vacia
+                    if (valorCelda == null || valorCelda.toString().trim().isEmpty()) {
+                        javax.swing.JOptionPane.showMessageDialog(
+                                null,
+                                "La celda está vacía. No hay ningún jugador para eliminar en esta fila.",
+                                "Aviso",
+                                javax.swing.JOptionPane.WARNING_MESSAGE
+                        );
+                        return;
+                    }
+
+                    String nombreJugador = valorCelda.toString();
+                    int opcion = javax.swing.JOptionPane.showConfirmDialog(
+                            null,
+                            "¿Estás absolutamente seguro de eliminar a " + nombreJugador + " del sistema?\nEsta acción borrará todos sus contratos y no se puede deshacer.",
+                            "Eliminar Jugador",
+                            javax.swing.JOptionPane.YES_NO_OPTION,
+                            javax.swing.JOptionPane.ERROR_MESSAGE
+                    );
+
+                    //Si el usuario dice "Si"
+                    if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+                        // boolean exito = controller.eliminarJugador(nombreJugador);
+
+                        //aqui para borrar de la bd
+                        // if(exito) javax.swing.table.DefaultTableModel) jTable1.getModel()).removeRow(filaAfectada)
+                        //    javax.swing.JOptionPane.showMessageDialog(null, "Jugador eliminado.")
+                        // }
+                        System.out.println(" Jugador " + nombreJugador + " eliminado (Simulación).");
+                    }
+                }
+            }
+        });
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -272,13 +315,14 @@ public class FormJugadores extends javax.swing.JPanel {
         jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, "Borrar"},
+                {null, null, null, null, null, null, null, "Borrar"},
+                {null, null, null, null, null, null, null, "Borrar"},
+                {null, null, null, null, null, null, null, "Borrar"},
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Sel", "Nombre", "Posición", "Equipo", "Edad", "Fin contrato", "Valor", "Acciones"
+                "Sel", "Nombre", "Posición", "Equipo", "Edad", "Fin contrato", "Valor", "Borrar"
             }
         ) {
             Class[] types = new Class [] {

@@ -33,12 +33,12 @@ public class Menu extends javax.swing.JPanel {
     
     public void initMenu(EventMenu event){
         this.event = event;
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/1.png")),"Dasboard", 0);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/2.png")),"Dasboard", 1);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/3.png")),"Dasboard", 2);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/4.png")),"Dasboard", 3);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/5.png")),"Dasboard", 4);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/6.png")),"Dasboard", 5);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/1.png")),"Inicio", 0);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/2.png")),"Equipos", 1);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/3.png")),"Jugadores", 2);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/4.png")),"Transferencias", 3);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/5.png")),"Estadisticas", 4);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/6.png")),"Comparar", 5);
         addEmpty();
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/logout.png")), "Logout", 8);
     }

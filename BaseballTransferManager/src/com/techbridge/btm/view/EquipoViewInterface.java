@@ -5,6 +5,9 @@
 package com.techbridge.btm.view;
 
 import com.techbridge.btm.DTO.EquipoDTO;
+import com.techbridge.btm.model.Equipo;
+import com.techbridge.btm.model.Jugador;
+import java.util.List;
 
 /**
  *
@@ -20,4 +23,6 @@ public interface EquipoViewInterface {
     
     //limpiar campos
     void limpiarCampos();
+    void mostrarEquipos(List<Equipo> equipos);
+    void mostrarJugadores(List<Jugador> jugadores);
 }

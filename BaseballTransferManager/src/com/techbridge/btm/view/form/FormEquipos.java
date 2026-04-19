@@ -1,5 +1,11 @@
 package com.techbridge.btm.view.form;
 
+import com.techbridge.btm.model.Equipo;
+import com.techbridge.btm.model.Jugador;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Surky
@@ -19,8 +25,9 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         com.techbridge.btm.repository.EquipoRepositoryImpl repo = new com.techbridge.btm.repository.EquipoRepositoryImpl();
         com.techbridge.btm.service.EquipoService service = new com.techbridge.btm.service.EquipoService(repo);
         this.controller = new com.techbridge.btm.controller.EquipoController(service, this);
+        controller.listarEquipos();
+        eventoSeleccionEquipo();
 
-       
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -151,13 +158,74 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
 
     @Override
     public void limpiarCampos() {
-        txtNombre.setText("");      
-        txtPresupuesto.setText("");  
+        txtNombre.setText("");
+        txtPresupuesto.setText("");
     }
-    
+
     public void actualizarTablaEquipos() {
 
+    }
 
+    @Override
+    public void mostrarEquipos(List<Equipo> equipos) {
+
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Presupuesto");
+
+        for (Equipo e : equipos) {
+            modelo.addRow(new Object[]{
+                e.getIdEquipo(),
+                e.getNombre(),
+                e.getPresupuesto()
+            });
+        }
+
+        jTable1.setModel(modelo);
+    }
+
+    private void eventoSeleccionEquipo() {
+
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+
+            if (!e.getValueIsAdjusting()) {
+
+                int fila = jTable1.getSelectedRow();
+
+                if (fila != -1) {
+
+                    int idEquipo = (int) jTable1.getValueAt(fila, 0);
+
+                    controller.obtenerJugadoresPorEquipo(idEquipo);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void mostrarJugadores(List<Jugador> jugadores) {
+
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Posición");
+        modelo.addColumn("Edad");
+        modelo.addColumn("Valor");
+
+        for (Jugador j : jugadores) {
+            modelo.addRow(new Object[]{
+                j.getId(),
+                j.getNombre(),
+                j.getPosicion(),
+                j.getEdad(),
+                j.getValor()
+            });
+        }
+
+        jTable2.setModel(modelo);
     }
 
     @SuppressWarnings("unchecked")
@@ -167,21 +235,15 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         pnlCreateJugador = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
         roundPanel7 = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
         btnCrearEquipo = new com.techbridge.btm.view.dashboard.swing.ButtonMenu();
-        header21 = new com.techbridge.btm.view.components.Header2();
-        jLabel5 = new javax.swing.JLabel();
         txtNombre = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
         txtPresupuesto = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         imageAvatar2 = new com.techbridge.btm.view.dashboard.swing.ImageAvatar();
         pnlJugadoresExistentes = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
-        header22 = new com.techbridge.btm.view.components.Header2();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         pnlGestionarJugador = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
-        header23 = new com.techbridge.btm.view.components.Header2();
-        jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -215,29 +277,6 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
             .addComponent(btnCrearEquipo, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
-        header21.setBackground(new java.awt.Color(33, 83, 126));
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Registrar Nuevo Equipo");
-
-        javax.swing.GroupLayout header21Layout = new javax.swing.GroupLayout(header21);
-        header21.setLayout(header21Layout);
-        header21Layout.setHorizontalGroup(
-            header21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(header21Layout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jLabel5)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        header21Layout.setVerticalGroup(
-            header21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(header21Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-
         txtNombre.setText("Ej: New York Yankees");
         txtNombre.addActionListener(this::txtNombreActionPerformed);
 
@@ -258,7 +297,6 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         pnlCreateJugador.setLayout(pnlCreateJugadorLayout);
         pnlCreateJugadorLayout.setHorizontalGroup(
             pnlCreateJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(header21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(pnlCreateJugadorLayout.createSequentialGroup()
                 .addGroup(pnlCreateJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlCreateJugadorLayout.createSequentialGroup()
@@ -278,8 +316,7 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         pnlCreateJugadorLayout.setVerticalGroup(
             pnlCreateJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlCreateJugadorLayout.createSequentialGroup()
-                .addComponent(header21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(50, 50, 50)
                 .addComponent(imageAvatar2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
@@ -296,50 +333,27 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
 
         pnlJugadoresExistentes.setBackground(new java.awt.Color(255, 255, 255));
 
-        header22.setBackground(new java.awt.Color(33, 83, 126));
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Gestion de Equipos");
-
-        javax.swing.GroupLayout header22Layout = new javax.swing.GroupLayout(header22);
-        header22.setLayout(header22Layout);
-        header22Layout.setHorizontalGroup(
-            header22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, header22Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(270, 270, 270))
-        );
-        header22Layout.setVerticalGroup(
-            header22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(header22Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "sel", "Nombre del equipo", "presupuesto", "borrar"
+                "null", "sel", "Nombre del equipo", "presupuesto", "borrar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -352,48 +366,25 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         });
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(10);
+        }
 
         javax.swing.GroupLayout pnlJugadoresExistentesLayout = new javax.swing.GroupLayout(pnlJugadoresExistentes);
         pnlJugadoresExistentes.setLayout(pnlJugadoresExistentesLayout);
         pnlJugadoresExistentesLayout.setHorizontalGroup(
             pnlJugadoresExistentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(header22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
         );
         pnlJugadoresExistentesLayout.setVerticalGroup(
             pnlJugadoresExistentesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlJugadoresExistentesLayout.createSequentialGroup()
-                .addComponent(header22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(50, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
 
         pnlGestionarJugador.setBackground(new java.awt.Color(255, 255, 255));
-
-        header23.setBackground(new java.awt.Color(33, 83, 126));
-
-        jLabel3.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Roster: Nombre equipo");
-
-        javax.swing.GroupLayout header23Layout = new javax.swing.GroupLayout(header23);
-        header23.setLayout(header23Layout);
-        header23Layout.setHorizontalGroup(
-            header23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, header23Layout.createSequentialGroup()
-                .addContainerGap(240, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166))
-        );
-        header23Layout.setVerticalGroup(
-            header23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, header23Layout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addContainerGap())
-        );
 
         jTable2.setBackground(new java.awt.Color(255, 255, 255));
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -434,16 +425,13 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         pnlGestionarJugadorLayout.setHorizontalGroup(
             pnlGestionarJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGestionarJugadorLayout.createSequentialGroup()
-                .addGroup(pnlGestionarJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(header23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addGap(14, 14, 14))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 716, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlGestionarJugadorLayout.setVerticalGroup(
             pnlGestionarJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGestionarJugadorLayout.createSequentialGroup()
-                .addComponent(header23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(22, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -480,7 +468,7 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlJugadoresExistentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(pnlGestionarJugador, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(pnlGestionarJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(pnlCreateJugador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)))
@@ -503,15 +491,9 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.techbridge.btm.view.dashboard.swing.ButtonMenu btnCrearEquipo;
-    private com.techbridge.btm.view.components.Header2 header21;
-    private com.techbridge.btm.view.components.Header2 header22;
-    private com.techbridge.btm.view.components.Header2 header23;
     private com.techbridge.btm.view.dashboard.swing.ImageAvatar imageAvatar2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

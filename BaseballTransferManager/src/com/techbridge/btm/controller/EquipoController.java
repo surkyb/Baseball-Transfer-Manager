@@ -5,8 +5,11 @@
 package com.techbridge.btm.controller;
 
 import com.techbridge.btm.DTO.EquipoDTO;
+import com.techbridge.btm.model.Equipo;
+import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.service.EquipoService;
 import com.techbridge.btm.view.EquipoViewInterface;
+import java.util.List;
 /**
  *
  * @author Joshua Abreu
@@ -33,9 +36,29 @@ public class EquipoController {
 
             // Limpiar 
             view.limpiarCampos();
+            listarEquipos();
 
         } catch (Exception e) {
             view.mostrarError(e.getMessage());
         }
     }
+    
+    // metodo para listar los equpos en una tabla //
+    public java.util.List<Equipo> listarEquipos() {
+    try {
+        return service.listarEquipos();
+    } catch (Exception e) {
+        view.mostrarError(e.getMessage());
+        return new java.util.ArrayList<>();
+    }
+}
+    
+    public void obtenerJugadoresPorEquipo(int idEquipo) {
+    try {
+        List<Jugador> jugadores = service.obtenerRoster(idEquipo);
+        view.mostrarJugadores(jugadores);
+    } catch (Exception e) {
+        view.mostrarError(e.getMessage());  
+    }
+}
 }

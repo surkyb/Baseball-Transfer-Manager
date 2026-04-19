@@ -9,17 +9,25 @@ package com.techbridge.btm.DTO;
  * @author Joshua Abreu
  */
 public class EquipoDTO {
+    private int idEquipo;
     private String nombre;
     private double presupuesto;
     
     public EquipoDTO(){
-        
+ 
     }
     public EquipoDTO(String nombre, double presupuesto){
         this.nombre = nombre;
         this.presupuesto = presupuesto;
     }
-    public String getNombre(){
+
+    public EquipoDTO(int idEquipo, String nombre, double presupuesto) {
+        this.idEquipo = idEquipo;
+        this.nombre = nombre;
+        this.presupuesto = presupuesto;
+    }
+
+    public String getNombre() {
         return nombre;
     }
     public void setNombre(String nombre){
@@ -30,5 +38,8 @@ public class EquipoDTO {
     }
     public void setPresupuesto(double presupuesto){
         this.presupuesto = presupuesto;
+    }
+    public int getIdEquipo() {
+        return idEquipo;
     }
 }

@@ -5,6 +5,7 @@
 package com.techbridge.btm.controller;
 
 import com.techbridge.btm.DTO.JugadorDTO;
+import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.service.JugadorService;
 import com.techbridge.btm.view.JugadorViewInterface;
 /**
@@ -39,5 +40,8 @@ public class JugadorController {
         }catch(Exception e){
             view.mostrarError(e.getMessage());
         }
+    }
+    public java.util.List<Jugador> listarTodosLosJugadores() {
+        return service.listarTodosLosJugadores();
     }
 }

@@ -1,17 +1,27 @@
 package com.techbridge.btm.view.form;
 
+import com.techbridge.btm.DTO.JugadorDTO;
+import com.techbridge.btm.controller.JugadorController;
+import com.techbridge.btm.model.Jugador;
+import com.techbridge.btm.repository.JugadorRepository;
+import com.techbridge.btm.repository.JugadorRepositoryImpl;
+import com.techbridge.btm.service.JugadorService;
+import com.techbridge.btm.view.JugadorViewInterface;
+
 /**
  *
  * @author Surky
  */
-public class FormJugadores extends javax.swing.JPanel {
+public class FormJugadores extends javax.swing.JPanel implements JugadorViewInterface {
+    private JugadorService jugadorService;
+    private JugadorController jugadorController;
 
     /**
      * Creates new form FormJugadores
      */
     public FormJugadores() {
         initComponents();
-        jTable1.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+        tablaJugadores.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -27,18 +37,18 @@ public class FormJugadores extends javax.swing.JPanel {
             }
         });
 
-        if (jTable1.getParent() != null) {
-            jTable1.getParent().setBackground(java.awt.Color.WHITE);
+        if (tablaJugadores.getParent() != null) {
+            tablaJugadores.getParent().setBackground(java.awt.Color.WHITE);
         }
 
-        jTable1.setShowHorizontalLines(true);
-        jTable1.setShowVerticalLines(true);
+        tablaJugadores.setShowHorizontalLines(true);
+        tablaJugadores.setShowVerticalLines(true);
 
-        jTable1.setGridColor(new java.awt.Color(200, 200, 200));
+        tablaJugadores.setGridColor(new java.awt.Color(200, 200, 200));
 
-        jTable1.setRowHeight(30);
+        tablaJugadores.setRowHeight(30);
 
-        jTable1.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+        tablaJugadores.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -56,17 +66,17 @@ public class FormJugadores extends javax.swing.JPanel {
             }
         });
 
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaJugadores.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Obtenemos exactamente en qué fila y columna se hizo el clic
-                int filaAfectada = jTable1.rowAtPoint(evt.getPoint());
-                int columnaAfectada = jTable1.columnAtPoint(evt.getPoint());
+                int filaAfectada = tablaJugadores.rowAtPoint(evt.getPoint());
+                int columnaAfectada = tablaJugadores.columnAtPoint(evt.getPoint());
 
                 if (columnaAfectada == 7 && filaAfectada >= 0) {
 
                     //  tomsmos el valor de la celda 
-                    Object valorCelda = jTable1.getValueAt(filaAfectada, 1);
+                    Object valorCelda = tablaJugadores.getValueAt(filaAfectada, 1);
                     // si ta vacia
                     if (valorCelda == null || valorCelda.toString().trim().isEmpty()) {
                         javax.swing.JOptionPane.showMessageDialog(
@@ -100,6 +110,15 @@ public class FormJugadores extends javax.swing.JPanel {
                 }
             }
         });
+        //Instanciamos la clase concreta que implementa la interfaz
+        JugadorRepository jugadorRepository = new JugadorRepositoryImpl();
+        //Le pasamos el repositorio al servicio
+        this.jugadorService = new JugadorService(jugadorRepository);
+        //Le pasamos esta vista (this) y el servicio al controlador
+        this.jugadorController = new JugadorController(jugadorService, this);
+        
+        // ¡Llamamos a la tabla aquí!
+        cargarTablaJugadores();
     }
 
     @SuppressWarnings("unchecked")
@@ -108,14 +127,14 @@ public class FormJugadores extends javax.swing.JPanel {
 
         pnlCreateJugador = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
         roundPanel7 = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
-        buttonMenu1 = new com.techbridge.btm.view.dashboard.swing.ButtonMenu();
+        btnCrearJugador = new com.techbridge.btm.view.dashboard.swing.ButtonMenu();
         header21 = new com.techbridge.btm.view.components.Header2();
         jLabel5 = new javax.swing.JLabel();
-        textFieldRounded1 = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
-        textFieldRounded2 = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
-        textFieldRounded5 = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
+        txtNombre = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
+        txtEdad = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
+        txtValor = new com.techbridge.btm.view.dashboard.swing.TextFieldRounded();
         panelRoundedBorder1 = new com.techbridge.btm.view.dashboard.swing.PanelRoundedBorder();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbPosicion = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -124,16 +143,16 @@ public class FormJugadores extends javax.swing.JPanel {
         header22 = new com.techbridge.btm.view.components.Header2();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaJugadores = new javax.swing.JTable();
         pnlGestionarJugador = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
         header23 = new com.techbridge.btm.view.components.Header2();
         jLabel3 = new javax.swing.JLabel();
         imageAvatar2 = new com.techbridge.btm.view.dashboard.swing.ImageAvatar();
         jLabel9 = new javax.swing.JLabel();
         panelRoundedBorder2 = new com.techbridge.btm.view.dashboard.swing.PanelRoundedBorder();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        cbAsignarEquipo = new javax.swing.JComboBox<>();
+        lblEdadAbajo = new javax.swing.JLabel();
+        lblNombreAbajo = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -158,21 +177,21 @@ public class FormJugadores extends javax.swing.JPanel {
 
         roundPanel7.setBackground(new java.awt.Color(33, 83, 126));
 
-        buttonMenu1.setText("Crear Jugador");
-        buttonMenu1.setAlignmentX(0.5F);
-        buttonMenu1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        buttonMenu1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        buttonMenu1.addActionListener(this::buttonMenu1ActionPerformed);
+        btnCrearJugador.setText("Crear Jugador");
+        btnCrearJugador.setAlignmentX(0.5F);
+        btnCrearJugador.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCrearJugador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnCrearJugador.addActionListener(this::btnCrearJugadorActionPerformed);
 
         javax.swing.GroupLayout roundPanel7Layout = new javax.swing.GroupLayout(roundPanel7);
         roundPanel7.setLayout(roundPanel7Layout);
         roundPanel7Layout.setHorizontalGroup(
             roundPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+            .addComponent(btnCrearJugador, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
         );
         roundPanel7Layout.setVerticalGroup(
             roundPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+            .addComponent(btnCrearJugador, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
         );
 
         header21.setBackground(new java.awt.Color(33, 83, 126));
@@ -198,29 +217,29 @@ public class FormJugadores extends javax.swing.JPanel {
                 .addContainerGap(11, Short.MAX_VALUE))
         );
 
-        textFieldRounded1.setText("Ej: Shoei Ohtani");
-        textFieldRounded1.addActionListener(this::textFieldRounded1ActionPerformed);
+        txtNombre.setText("Ej: Shoei Ohtani");
+        txtNombre.addActionListener(this::txtNombreActionPerformed);
 
-        textFieldRounded2.setText("Ej: 31");
-        textFieldRounded2.addActionListener(this::textFieldRounded2ActionPerformed);
+        txtEdad.setText("Ej: 31");
+        txtEdad.addActionListener(this::txtEdadActionPerformed);
 
-        textFieldRounded5.setText("Ej: 700M");
+        txtValor.setText("Ej: 700M");
 
-        jComboBox1.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pitcher (P)", "Catcher (C)", "Primera Base (1B)", "Segunda Base (2B)", "Tercera Base (3B)", "Shortstop (SS)", "Jardinero Izquierdo (LF)", "Jardinero Central (CF)", "Jardinero Derecho (RF)", "Bateador Designado (DH)" }));
-        jComboBox1.setBorder(null);
-        jComboBox1.addActionListener(this::jComboBox1ActionPerformed);
+        cbPosicion.setBackground(new java.awt.Color(255, 255, 255));
+        cbPosicion.setForeground(new java.awt.Color(255, 255, 255));
+        cbPosicion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pitcher (P)", "Catcher (C)", "Primera Base (1B)", "Segunda Base (2B)", "Tercera Base (3B)", "Shortstop (SS)", "Jardinero Izquierdo (LF)", "Jardinero Central (CF)", "Jardinero Derecho (RF)", "Bateador Designado (DH)" }));
+        cbPosicion.setBorder(null);
+        cbPosicion.addActionListener(this::cbPosicionActionPerformed);
 
         javax.swing.GroupLayout panelRoundedBorder1Layout = new javax.swing.GroupLayout(panelRoundedBorder1);
         panelRoundedBorder1.setLayout(panelRoundedBorder1Layout);
         panelRoundedBorder1Layout.setHorizontalGroup(
             panelRoundedBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox1, 0, 222, Short.MAX_VALUE)
+            .addComponent(cbPosicion, 0, 222, Short.MAX_VALUE)
         );
         panelRoundedBorder1Layout.setVerticalGroup(
             panelRoundedBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(cbPosicion, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
@@ -251,11 +270,11 @@ public class FormJugadores extends javax.swing.JPanel {
                     .addComponent(jLabel7)
                     .addComponent(jLabel6)
                     .addComponent(jLabel4)
-                    .addComponent(textFieldRounded5, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(roundPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnlCreateJugadorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(textFieldRounded1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(textFieldRounded2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtEdad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(panelRoundedBorder1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -266,11 +285,11 @@ public class FormJugadores extends javax.swing.JPanel {
                 .addGap(59, 59, 59)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textFieldRounded1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addGap(3, 3, 3)
-                .addComponent(textFieldRounded2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -278,7 +297,7 @@ public class FormJugadores extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
                 .addGap(8, 8, 8)
-                .addComponent(textFieldRounded5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
                 .addComponent(roundPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
@@ -312,8 +331,8 @@ public class FormJugadores extends javax.swing.JPanel {
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaJugadores.setBackground(new java.awt.Color(255, 255, 255));
+        tablaJugadores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null, "Borrar"},
                 {null, null, null, null, null, null, null, "Borrar"},
@@ -340,7 +359,12 @@ public class FormJugadores extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        tablaJugadores.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaJugadoresMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaJugadores);
 
         javax.swing.GroupLayout pnlJugadoresExistentesLayout = new javax.swing.GroupLayout(pnlJugadoresExistentes);
         pnlJugadoresExistentes.setLayout(pnlJugadoresExistentesLayout);
@@ -397,34 +421,34 @@ public class FormJugadores extends javax.swing.JPanel {
         jLabel9.setText("Asignar / Cambiar de equipo");
         pnlGestionarJugador.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(232, 70, -1, -1));
 
-        jComboBox2.setBackground(new java.awt.Color(255, 255, 255));
-        jComboBox2.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pitcher (P)", "Catcher (C)", "Primera Base (1B)", "Segunda Base (2B)", "Tercera Base (3B)", "Shortstop (SS)", "Jardinero Izquierdo (LF)", "Jardinero Central (CF)", "Jardinero Derecho (RF)", "Bateador Designado (DH)" }));
-        jComboBox2.setBorder(null);
-        jComboBox2.addActionListener(this::jComboBox2ActionPerformed);
+        cbAsignarEquipo.setBackground(new java.awt.Color(255, 255, 255));
+        cbAsignarEquipo.setForeground(new java.awt.Color(255, 255, 255));
+        cbAsignarEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pitcher (P)", "Catcher (C)", "Primera Base (1B)", "Segunda Base (2B)", "Tercera Base (3B)", "Shortstop (SS)", "Jardinero Izquierdo (LF)", "Jardinero Central (CF)", "Jardinero Derecho (RF)", "Bateador Designado (DH)" }));
+        cbAsignarEquipo.setBorder(null);
+        cbAsignarEquipo.addActionListener(this::cbAsignarEquipoActionPerformed);
 
         javax.swing.GroupLayout panelRoundedBorder2Layout = new javax.swing.GroupLayout(panelRoundedBorder2);
         panelRoundedBorder2.setLayout(panelRoundedBorder2Layout);
         panelRoundedBorder2Layout.setHorizontalGroup(
             panelRoundedBorder2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox2, 0, 188, Short.MAX_VALUE)
+            .addComponent(cbAsignarEquipo, 0, 188, Short.MAX_VALUE)
         );
         panelRoundedBorder2Layout.setVerticalGroup(
             panelRoundedBorder2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jComboBox2, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(cbAsignarEquipo, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pnlGestionarJugador.add(panelRoundedBorder2, new org.netbeans.lib.awtextra.AbsoluteConstraints(232, 100, 198, -1));
 
-        jLabel10.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(30, 30, 30));
-        jLabel10.setText("Edad: ");
-        pnlGestionarJugador.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 237, 186, 18));
+        lblEdadAbajo.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        lblEdadAbajo.setForeground(new java.awt.Color(30, 30, 30));
+        lblEdadAbajo.setText("Edad: ");
+        pnlGestionarJugador.add(lblEdadAbajo, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 237, 186, 18));
 
-        jLabel11.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(30, 30, 30));
-        jLabel11.setText("Nombre del jugador: ");
-        pnlGestionarJugador.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 207, 420, -1));
+        lblNombreAbajo.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
+        lblNombreAbajo.setForeground(new java.awt.Color(30, 30, 30));
+        lblNombreAbajo.setText("Nombre del jugador: ");
+        pnlGestionarJugador.add(lblNombreAbajo, new org.netbeans.lib.awtextra.AbsoluteConstraints(28, 207, 420, -1));
 
         jLabel12.setFont(new java.awt.Font("Yu Gothic", 1, 14)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(30, 30, 30));
@@ -598,25 +622,33 @@ public class FormJugadores extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void buttonMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMenu1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_buttonMenu1ActionPerformed
+    private void btnCrearJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearJugadorActionPerformed
+        try{
+            // Le decimos al controlador que inicie el proceso de registro
+            jugadorController.registrarJugador();
+            
+            limpiarCampos();
+            cargarTablaJugadores();
+        }catch(Exception e){
+            mostrarError("Error al intentar guardar el jugador: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnCrearJugadorActionPerformed
 
-    private void textFieldRounded1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldRounded1ActionPerformed
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldRounded1ActionPerformed
+    }//GEN-LAST:event_txtNombreActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cbPosicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbPosicionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cbPosicionActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void cbAsignarEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbAsignarEquipoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_cbAsignarEquipoActionPerformed
 
-    private void textFieldRounded2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldRounded2ActionPerformed
+    private void txtEdadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEdadActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldRounded2ActionPerformed
+    }//GEN-LAST:event_txtEdadActionPerformed
 
     private void btnAsignarAEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarAEquipoActionPerformed
 // campos de texto para la ventana
@@ -649,13 +681,33 @@ public class FormJugadores extends javax.swing.JPanel {
 
 //Capturar los dato si "ok""
         if (opcion == javax.swing.JOptionPane.OK_OPTION) {
-            String salario = txtSalario.getText();
-            String fechaInicio = txtFechaInicio.getText();
-            String fechaFin = txtFechaFin.getText();
+            try{
+                String salario = txtSalario.getText();
+                String fechaInicio = txtFechaInicio.getText();
+                String fechaFin = txtFechaFin.getText();
+                //Tomamos el nombre del jugador y el equipo seleccionado en la pantalla
+                String nombreJugador = txtNombre.getText();
+                String equipoSeleccionado = cbAsignarEquipo.getSelectedItem().toString();
+                
+                // 2. LA ACCIÓN: Aquí llamas a tu controlador. 
+                // Lo dejo comentado (con //) porque recuerda que tu base de datos aún no tiene 
+                // estas columnas de salario y fechas. Cuando las crees, solo le quitas las //
+                // jugadorController.asignarEquipo(nombreJugador, equipoSeleccionado, salario, fechaInicio, fechaFin);
 
-            // controller.asignarEquipo(idJugador, idEquipoSeleccionado, salario, fechaInicio, fechaFin);
-            // Mensaje temporal
-            System.out.println("Asignación lista para guardar. Salario: " + salario);
+                // controller.asignarEquipo(idJugador, idEquipoSeleccionado, salario, fechaInicio, fechaFin);
+                // Mensaje temporal
+                javax.swing.JOptionPane.showMessageDialog(
+                        this,
+                        "El jugador " + nombreJugador + " ha sido asignado exitosamente.\nSalario registrado: $" + salario,
+                        "Asignación Exitosa",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE
+                );
+                // 4. ¡Actualizar la tabla!
+                cargarTablaJugadores();
+            }catch(Exception e){
+                mostrarError("Ocurrió un error al asignar el equipo: " + e.getMessage());
+            }
+            
 }    }//GEN-LAST:event_btnAsignarAEquipoActionPerformed
 
     private void btnDetallesContratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetallesContratoActionPerformed
@@ -702,6 +754,7 @@ public class FormJugadores extends javax.swing.JPanel {
         );
 
         if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+            
             System.out.println("El jugador ha sido liberado. Ahora es Agente Libre.");
             javax.swing.JOptionPane.showMessageDialog(
                     this,
@@ -711,21 +764,45 @@ public class FormJugadores extends javax.swing.JPanel {
             );
 }    }//GEN-LAST:event_btnAgenteLibreActionPerformed
 
+    private void tablaJugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaJugadoresMouseClicked
+        //Averiguamos a qué fila le diste clic (empieza en 0)
+        int filaSeleccionada = tablaJugadores.getSelectedRow();
+
+        // Si la fila es mayor o igual a 0 (es decir, sí tocaste a un jugador y no al vacío)
+        if (filaSeleccionada >= 0) {
+
+            // Extraemos los datos de esa fila específica.
+            // Usamos los mismos números de columna que en el for que hicimos antes:
+            // Columna 1: Nombre | Columna 2: Posición | Columna 4: Edad | Columna 6: Valor
+            String nombre = tablaJugadores.getValueAt(filaSeleccionada, 1).toString();
+            String posicion = tablaJugadores.getValueAt(filaSeleccionada, 2).toString();
+            String edad = tablaJugadores.getValueAt(filaSeleccionada, 4).toString();
+            String valor = tablaJugadores.getValueAt(filaSeleccionada, 6).toString();
+
+            // 3. Escribimos esos datos en las casillas del formulario de la izquierda
+            txtNombre.setText(nombre);
+            cbPosicion.setSelectedItem(posicion); // El combobox selecciona la opción automáticamente
+            txtEdad.setText(edad);
+            txtValor.setText(valor);
+
+            lblNombreAbajo.setText(nombre);
+            lblEdadAbajo.setText(edad);
+        }
+    }//GEN-LAST:event_tablaJugadoresMouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.techbridge.btm.view.dashboard.swing.ButtonMenu btnAgenteLibre;
     private com.techbridge.btm.view.dashboard.swing.ButtonMenu btnAsignarAEquipo;
+    private com.techbridge.btm.view.dashboard.swing.ButtonMenu btnCrearJugador;
     private com.techbridge.btm.view.dashboard.swing.ButtonMenu btnDetallesContrato;
     private com.techbridge.btm.view.dashboard.swing.ButtonMenu btnRenovarContrato;
-    private com.techbridge.btm.view.dashboard.swing.ButtonMenu buttonMenu1;
+    private javax.swing.JComboBox<String> cbAsignarEquipo;
+    private javax.swing.JComboBox<String> cbPosicion;
     private com.techbridge.btm.view.components.Header2 header21;
     private com.techbridge.btm.view.components.Header2 header22;
     private com.techbridge.btm.view.components.Header2 header23;
     private com.techbridge.btm.view.dashboard.swing.ImageAvatar imageAvatar2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
@@ -739,7 +816,8 @@ public class FormJugadores extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblEdadAbajo;
+    private javax.swing.JLabel lblNombreAbajo;
     private com.techbridge.btm.view.dashboard.swing.PanelRoundedBorder panelRoundedBorder1;
     private com.techbridge.btm.view.dashboard.swing.PanelRoundedBorder panelRoundedBorder2;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel pnlCreateJugador;
@@ -751,8 +829,68 @@ public class FormJugadores extends javax.swing.JPanel {
     private com.techbridge.btm.view.dashboard.swing.RoundPanel roundPanel4;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel roundPanel5;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel roundPanel7;
-    private com.techbridge.btm.view.dashboard.swing.TextFieldRounded textFieldRounded1;
-    private com.techbridge.btm.view.dashboard.swing.TextFieldRounded textFieldRounded2;
-    private com.techbridge.btm.view.dashboard.swing.TextFieldRounded textFieldRounded5;
+    private javax.swing.JTable tablaJugadores;
+    private com.techbridge.btm.view.dashboard.swing.TextFieldRounded txtEdad;
+    private com.techbridge.btm.view.dashboard.swing.TextFieldRounded txtNombre;
+    private com.techbridge.btm.view.dashboard.swing.TextFieldRounded txtValor;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public JugadorDTO getDatosJugador() {
+       //Extraemos la información de los campos de texto
+        String nombre = txtNombre.getText(); 
+        int edad = Integer.parseInt(txtEdad.getText());
+        String posicion = cbPosicion.getSelectedItem().toString();
+        double valor = Double.parseDouble(txtValor.getText());
+        
+        //Creamos el empaque y lo devolvemos
+        return new JugadorDTO(nombre, edad, posicion, valor);
+    }
+
+    @Override
+    public void mostrarMensaje(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
+    }
+
+    @Override
+    public void mostrarError(String error) {
+       javax.swing.JOptionPane.showMessageDialog(this, error, "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void limpiarCampos() {
+        txtNombre.setText("");
+        txtEdad.setText("");
+        txtValor.setText("");
+        
+        cbPosicion.setSelectedIndex(0);
+        
+    }
+    
+    public void cargarTablaJugadores(){
+        try{
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaJugadores.getModel();
+            
+            //Limpiamos la tabla por si tenía datos viejos o de prueba
+            modelo.setRowCount(0);
+            //Pedimos la lista al controlador
+            java.util.List<Jugador> lista = jugadorController.listarTodosLosJugadores();
+            
+            for (Jugador ju : lista) {
+                Object[] fila = new Object[8];
+                fila[0] = false; // Para el checkbox de "Sel"
+                fila[1] = ju.getNombre();
+                fila[2] = ju.getPosicion();
+                fila[3] = ju.getEquipo(); // Por ahora, o ju.getEquipo() si lo tienes
+                fila[4] = ju.getEdad();
+                fila[5] = "N/A"; // Fecha de fin de contrato
+                fila[6] = ju.getValor();
+                fila[7] = "Borrar"; // Para el botón de borrar
+
+                modelo.addRow(fila);
+            }     
+        }catch (Exception e){
+            mostrarError("Error al cargar la tabla: " + e.getMessage());
+        }
+    }
 }

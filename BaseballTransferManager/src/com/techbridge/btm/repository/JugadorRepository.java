@@ -16,5 +16,7 @@ public interface JugadorRepository {
     
     // Este otro metodo lo creamos para eliminar un jugador
     void eliminar(String nombre);
+    //metodo para mas adelante poder mostrar todos los jugadores en la tabla jugadores del swing
+    java.util.List<Jugador> listarTodos();
     
 }

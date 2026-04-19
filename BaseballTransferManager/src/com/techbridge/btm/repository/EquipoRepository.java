@@ -22,4 +22,7 @@ public interface EquipoRepository {
     // Metodo para mostrar los jugadores de un equipo
     ArrayList<Jugador> buscarPorEquipo(int idEquipo);
     
+    // Metodo para mostrar los equipos
+    java.util.List<Equipo> obtenerTodosLosEquipos();
+    
 }

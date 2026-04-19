@@ -1,8 +1,11 @@
 package com.techbridge.btm;
 
 import com.techbridge.btm.view.event.EventMenu;
-import com.techbridge.btm.view.form.Form;
+import com.techbridge.btm.view.form.FormEquipos;
+import com.techbridge.btm.view.form.FormEstadisticas;
 import com.techbridge.btm.view.form.FormJugadores;
+import com.techbridge.btm.view.form.EjemploGrafico;
+import com.techbridge.btm.view.form.Form;
 import java.awt.Color;
 import java.awt.Component;
 
@@ -26,12 +29,21 @@ public class dashboardPrueba extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
 
-                if (index == 0) {
-                    showForm(new FormJugadores());
-                } else if (index == 8) {
-                    System.out.println("Logout");
-                } else {
-                    showForm(new Form(index));
+                switch (index) {
+                    case 0:
+                        showForm(new FormJugadores());
+                        break;
+                    case 1:
+                        showForm(new FormEquipos());
+                        break;
+                    case 2: 
+
+                        break;
+                    case 8:
+                        System.out.println("Logout");
+                        break;
+                    default: 
+                        break;
                 }
 
             }

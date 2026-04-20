@@ -596,17 +596,13 @@
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="10">
-                    <StringItem index="0" value="Pitcher (P)"/>
-                    <StringItem index="1" value="Catcher (C)"/>
-                    <StringItem index="2" value="Primera Base (1B)"/>
-                    <StringItem index="3" value="Segunda Base (2B)"/>
-                    <StringItem index="4" value="Tercera Base (3B)"/>
-                    <StringItem index="5" value="Shortstop (SS)"/>
-                    <StringItem index="6" value="Jardinero Izquierdo (LF)"/>
-                    <StringItem index="7" value="Jardinero Central (CF)"/>
-                    <StringItem index="8" value="Jardinero Derecho (RF)"/>
-                    <StringItem index="9" value="Bateador Designado (DH)"/>
+                  <StringArray count="6">
+                    <StringItem index="0" value="Tigres del Licey"/>
+                    <StringItem index="1" value="&#xc1;guilas Cibae&#xf1;as"/>
+                    <StringItem index="2" value="Leones del Escogido"/>
+                    <StringItem index="3" value="Estrellas Orientales"/>
+                    <StringItem index="4" value="Toros del Este"/>
+                    <StringItem index="5" value="Gigantes del Cibao"/>
                   </StringArray>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

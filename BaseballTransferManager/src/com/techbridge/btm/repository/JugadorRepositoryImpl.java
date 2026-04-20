@@ -1,5 +1,6 @@
 package com.techbridge.btm.repository;
 import com.techbridge.btm.dbconnection.DatabaseConnection;
+import com.techbridge.btm.model.Equipo;
 import com.techbridge.btm.model.Jugador;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
@@ -111,7 +112,11 @@ public class JugadorRepositoryImpl implements JugadorRepository {
     @Override
     public java.util.List<Jugador> listarTodos() {
         java.util.List<Jugador> lista = new java.util.ArrayList<>();
-        String sql = "SELECT * FROM jugador";
+        String sql = "SELECT j.id, j.nombre, j.posicion, j.edad, j.valor, " +
+                     "e.nombre AS equipo_nombre, c.fecha_fin " +
+                     "FROM Jugador j " +
+                     "LEFT JOIN Contrato c ON j.id = c.id_jugador AND c.id_estado_contrato = 1 " +
+                     "LEFT JOIN Equipo e ON c.id_equipo = e.id";
         
         try (Connection con = DatabaseConnection.getConexion();
              PreparedStatement ps = con.prepareStatement(sql);
@@ -126,6 +131,24 @@ public class JugadorRepositoryImpl implements JugadorRepository {
                 ju.setPosicion(resul.getString("posicion"));
                 ju.setValor(resul.getDouble("valor"));
                 
+                // 1. Extraemos el nombre del equipo. Si es nulo, le ponemos "Agente Libre"
+                String nombreEquipo = resul.getString("equipo_nombre");
+                Equipo eq = new Equipo();
+                if(nombreEquipo != null){
+                    eq.setNombre(nombreEquipo);
+                }else{
+                    eq.setNombre("Agente Libre");
+                }
+                ju.setEquipo(eq);// Guardamos el objeto equipo dentro del jugador
+                
+
+                // --- MANEJO DE LA FECHA DE CONTRATO ---
+                java.sql.Date fecha = resul.getDate("fecha_fin");
+                if (fecha != null) {
+                    ju.setFechaFin(fecha.toString());
+                } else {
+                    ju.setFechaFin("N/A");
+                }            
                 lista.add(ju); // Lo metemos en la lista
             }
         } catch (Exception e) {

@@ -99,13 +99,27 @@ public class FormJugadores extends javax.swing.JPanel implements JugadorViewInte
 
                     //Si el usuario dice "Si"
                     if (opcion == javax.swing.JOptionPane.YES_OPTION) {
-                        // boolean exito = controller.eliminarJugador(nombreJugador);
-
-                        //aqui para borrar de la bd
-                        // if(exito) javax.swing.table.DefaultTableModel) jTable1.getModel()).removeRow(filaAfectada)
-                        //    javax.swing.JOptionPane.showMessageDialog(null, "Jugador eliminado.")
-                        // }
-                        System.out.println(" Jugador " + nombreJugador + " eliminado (Simulación).");
+                        try{
+                            //LLAMADA REAL AL CONTROLADOR
+                            jugadorController.eliminarJugador(nombreJugador);
+                            
+                            javax.swing.JOptionPane.showMessageDialog(
+                            null, 
+                            "Jugador eliminado exitosamente de la base de datos.",
+                            "Eliminación Exitosa",
+                            javax.swing.JOptionPane.INFORMATION_MESSAGE
+                            );
+                            
+                            cargarTablaJugadores();
+                            limpiarCampos();
+                        }catch (Exception e){
+                            javax.swing.JOptionPane.showMessageDialog(
+                            null, 
+                            "Error al eliminar el jugador: " + e.getMessage(), 
+                            "Error de Base de Datos", 
+                            javax.swing.JOptionPane.ERROR_MESSAGE);
+                        }
+                       
                     }
                 }
             }
@@ -423,7 +437,7 @@ public class FormJugadores extends javax.swing.JPanel implements JugadorViewInte
 
         cbAsignarEquipo.setBackground(new java.awt.Color(255, 255, 255));
         cbAsignarEquipo.setForeground(new java.awt.Color(255, 255, 255));
-        cbAsignarEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pitcher (P)", "Catcher (C)", "Primera Base (1B)", "Segunda Base (2B)", "Tercera Base (3B)", "Shortstop (SS)", "Jardinero Izquierdo (LF)", "Jardinero Central (CF)", "Jardinero Derecho (RF)", "Bateador Designado (DH)" }));
+        cbAsignarEquipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tigres del Licey", "Águilas Cibaeñas", "Leones del Escogido", "Estrellas Orientales", "Toros del Este", "Gigantes del Cibao" }));
         cbAsignarEquipo.setBorder(null);
         cbAsignarEquipo.addActionListener(this::cbAsignarEquipoActionPerformed);
 
@@ -946,9 +960,13 @@ public class FormJugadores extends javax.swing.JPanel implements JugadorViewInte
                 fila[0] = false; // Para el checkbox de "Sel"
                 fila[1] = ju.getNombre();
                 fila[2] = ju.getPosicion();
-                fila[3] = ju.getEquipo(); // Por ahora, o ju.getEquipo() si lo tienes
+                if(ju.getEquipo() != null){
+                    fila[3] = ju.getEquipo().getNombre();
+                }else{
+                    fila[3] = "Agente Libre";
+                }               
                 fila[4] = ju.getEdad();
-                fila[5] = "N/A"; // Fecha de fin de contrato
+                fila[5] = ju.getFechaFin(); // Fecha de fin de contrato
                 fila[6] = ju.getValor();
                 fila[7] = "Borrar"; // Para el botón de borrar
 

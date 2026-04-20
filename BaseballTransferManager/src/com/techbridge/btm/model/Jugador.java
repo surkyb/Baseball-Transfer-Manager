@@ -19,7 +19,8 @@ public class Jugador {
 
     private Estadisticas estadisticas;
     private Equipo equipo;
-
+    
+    private String fechaFin; 
     public Jugador() {
     }
 
@@ -97,5 +98,14 @@ public class Jugador {
     public void setEquipo(Equipo equipo) {
         this.equipo = equipo;
     }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+    
   
 }

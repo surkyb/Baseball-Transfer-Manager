@@ -60,4 +60,9 @@ public class JugadorController {
     public String obtenerDetallesJugador(String nombreJugador) throws Exception {
         return service.obtenerDetallesJugador(nombreJugador);
     }
+
+    // Método para eliminar jugador conectado a la base de datos
+    public void eliminarJugador(String nombreJugador) throws Exception {
+        service.eliminarJugador(nombreJugador);
+    }
 }

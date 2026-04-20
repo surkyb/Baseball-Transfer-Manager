@@ -101,28 +101,55 @@ public class TransferenciaRepositoryImpl implements TransferenciaRepository {
     // utilizamos el override para sobreescribir el metodo eliminarTransferencia // 
     @Override
     public void eliminarTransferencia(int idTransferencia) {
-        
-         //Declaramos una variable String la cual contendra la consulta SQL//
+
+        //Declaramos una variable String la cual contendra la consulta SQL//
         String sql = "DELETE FROM transferencia WHERE id = ?";
-        
-         /*Agregamos un try catch para poder manejar cualquier tipo de error
+
+        /*Agregamos un try catch para poder manejar cualquier tipo de error
         y evitar que se cierre abruptamente */
-        
-        /*Dentro del try se encuentra la coneccion con la base de datos
+ /*Dentro del try se encuentra la coneccion con la base de datos
         para hacer la consulta, y el PreparedStatement es para poder inyectar
         la consulta SQL */
-        
-        try (Connection con =DatabaseConnection.getConexion();
-              PreparedStatement ps = con.prepareStatement(sql)) {
-            
-             //Aqui agregamos las informaciones necesarias en la consulta//
+        try (Connection con = DatabaseConnection.getConexion(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+            //Aqui agregamos las informaciones necesarias en la consulta//
             ps.setInt(1, idTransferencia);
-            
+
             //El executeUpdate se utiliza para ya ejecutar la consulta (o sea eliminar en este caso)//
             ps.executeUpdate();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public java.util.List<Object[]> listarHistorialParaTabla() {
+        java.util.List<Object[]> historial = new java.util.ArrayList<>();
+
+        // ¡SQL Corregido! 
+        // Cambiamos o.nombreEquipo por o.nombre y d.nombreEquipo por d.nombre
+        // Cambiamos o.id_equipo por o.id y d.id_equipo por d.id
+        String sql = "SELECT t.fecha, j.nombre AS jugador, o.nombre AS origen, d.nombre AS destino, t.monto "
+                + "FROM transferencia t "
+                + "JOIN jugador j ON t.id_jugador = j.id "
+                + "JOIN equipo o ON t.id_equipo_origen = o.id "
+                + "JOIN equipo d ON t.id_equipo_destino = d.id "
+                + "ORDER BY t.fecha DESC";
+
+        try (Connection con = DatabaseConnection.getConexion(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                historial.add(new Object[]{
+                    rs.getDate("fecha"),
+                    rs.getString("jugador"),
+                    rs.getString("origen"),
+                    rs.getString("destino"),
+                    "$" + String.format("%,.2f", rs.getDouble("monto")) // Formatea el dinero bonito
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return historial;
     }
 }

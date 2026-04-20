@@ -1,4 +1,4 @@
-package com.techbridge.btm.view.dashboard.swing.scrollbar;
+package com.techbridge.btm.view.dashboard.swing;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

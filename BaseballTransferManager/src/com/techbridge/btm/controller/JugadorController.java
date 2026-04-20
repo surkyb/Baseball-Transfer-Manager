@@ -8,6 +8,8 @@ import com.techbridge.btm.DTO.JugadorDTO;
 import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.service.JugadorService;
 import com.techbridge.btm.view.JugadorViewInterface;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author Joshua Abreu
@@ -44,4 +46,21 @@ public class JugadorController {
     public java.util.List<Jugador> listarTodosLosJugadores() {
         return service.listarTodosLosJugadores();
     }
+    
+    public List<Object[]> listarJugadoresParaTabla() {
+    List<Jugador> jugadores = service.listarTodosLosJugadores();
+    List<Object[]> datos = new ArrayList<>();
+
+    for (Jugador j : jugadores) {
+        datos.add(new Object[]{
+            j.getId(),
+            j.getNombre(),
+            j.getPosicion()
+        });
+    }
+
+    return datos;
 }
+}
+
+    

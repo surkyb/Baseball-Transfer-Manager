@@ -17,5 +17,6 @@ public interface EstadisticasRepository {
     
     Estadisticas buscarEstadisticas(int idEstadisticas);
     
+    Estadisticas buscarEstadisticasPorJugador(int idJugador);
     
 }

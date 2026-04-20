@@ -39,8 +39,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
               <Component id="blankPlotChart" min="-2" pref="316" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="panelLegend" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+              <Component id="panelLegend" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -56,7 +56,7 @@
         <Property name="verticalGap" type="int" value="0"/>
       </Layout>
     </Container>
-    <Container class="com.techbridge.btm.view.dashboard.blankchart.BlankPlotChart" name="blankPlotChart">
+    <Container class="com.techbridge.btm.view.dashboard.swing.BlankPlotChart" name="blankPlotChart">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>

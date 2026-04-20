@@ -1,5 +1,6 @@
-package com.techbridge.btm.view.dashboard.blankchart;
+package com.techbridge.btm.view.dashboard.swing;
 
+import com.techbridge.btm.view.dashboard.swing.SeriesSize;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;

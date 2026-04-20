@@ -1,5 +1,6 @@
-package com.techbridge.btm.view.dashboard.swing.scrollbar;
+package com.techbridge.btm.view.dashboard.swing;
 
+import com.techbridge.btm.view.dashboard.swing.ModernScrollBarUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JScrollBar;

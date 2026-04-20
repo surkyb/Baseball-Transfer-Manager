@@ -1,5 +1,8 @@
-package com.techbridge.btm.view.dashboard.blankchart;
+package com.techbridge.btm.view.dashboard.swing;
 
+import com.techbridge.btm.view.dashboard.swing.BlankPlotChatRender;
+import com.techbridge.btm.view.dashboard.swing.NiceScale;
+import com.techbridge.btm.view.dashboard.swing.SeriesSize;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;

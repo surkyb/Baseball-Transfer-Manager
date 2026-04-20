@@ -1,7 +1,7 @@
 package com.techbridge.btm.view.components;
 
 import com.techbridge.btm.view.dashboard.swing.ButtonMenu;
-import com.techbridge.btm.view.dashboard.swing.scrollbar.ScrollBarCustom;
+import com.techbridge.btm.view.dashboard.swing.ScrollBarCustom;
 import com.techbridge.btm.view.event.EventMenu;
 import java.awt.Color;
 import java.awt.Component;
@@ -34,8 +34,8 @@ public class Menu extends javax.swing.JPanel {
     public void initMenu(EventMenu event){
         this.event = event;
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/1.png")),"Inicio", 0);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/2.png")),"Equipos", 1);
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/3.png")),"Jugadores", 2);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/3.png")),"Jugadores", 1);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/2.png")),"Equipos", 2);
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/4.png")),"Transferencias", 3);
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/5.png")),"Estadisticas", 4);
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/6.png")),"Comparar", 5);
@@ -96,7 +96,7 @@ public class Menu extends javax.swing.JPanel {
         jLabel2.setText("Admin");
 
         imageAvatar1.setBorderSize(2);
-        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/profile.jpg"))); // NOI18N
+        imageAvatar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/Captura de pantalla 2026-04-19 220456.png"))); // NOI18N
 
         javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
         roundPanel1.setLayout(roundPanel1Layout);
@@ -158,7 +158,7 @@ public class Menu extends javax.swing.JPanel {
             roundPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(roundPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 

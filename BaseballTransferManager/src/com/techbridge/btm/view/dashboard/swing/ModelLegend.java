@@ -1,4 +1,4 @@
-package com.techbridge.btm.view.dashboard.blankchart;
+package com.techbridge.btm.view.dashboard.swing;
 
 import java.awt.Color;
 

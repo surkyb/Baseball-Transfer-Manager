@@ -1,11 +1,12 @@
 package com.techbridge.btm;
 
 import com.techbridge.btm.view.event.EventMenu;
+import com.techbridge.btm.view.form.FormComparar;
 import com.techbridge.btm.view.form.FormEquipos;
 import com.techbridge.btm.view.form.FormEstadisticas;
+import com.techbridge.btm.view.form.FormInicio;
 import com.techbridge.btm.view.form.FormJugadores;
-import com.techbridge.btm.view.form.EjemploGrafico;
-import com.techbridge.btm.view.form.Form;
+import com.techbridge.btm.view.form.FormTransferencias;
 import java.awt.Color;
 import java.awt.Component;
 
@@ -18,7 +19,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(dashboardPrueba.class.getName());
 
     /**
-     * Creates new form dashboardPrueba
+     * Creates new form dashboardPruebaS
      */
    
     public dashboardPrueba() {
@@ -31,16 +32,22 @@ public class dashboardPrueba extends javax.swing.JFrame {
 
                 switch (index) {
                     case 0:
-                        showForm(new FormJugadores());
+                        showForm(new FormInicio());
                         break;
                     case 1:
-                        showForm(new FormEquipos());
+                        showForm(new FormJugadores());
                         break;
                     case 2: 
-
+                        showForm(new FormEquipos());
                         break;
-                    case 8:
-                        System.out.println("Logout");
+                    case 3: 
+                        showForm(new FormTransferencias());
+                        break;
+                    case 4:
+                        showForm(new FormEstadisticas());
+                        break;
+                    case 5:
+                        showForm(new FormComparar());
                         break;
                     default: 
                         break;
@@ -50,7 +57,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
         };
 
         miMenu2.initMenu(event);
-        showForm(new FormJugadores());
+        showForm(new FormInicio());
 
     }
         private void showForm(Component com) {
@@ -59,10 +66,6 @@ public class dashboardPrueba extends javax.swing.JFrame {
         body.revalidate();
         body.repaint();
     }
-        
-    
-    
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

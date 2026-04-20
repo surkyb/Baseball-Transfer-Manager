@@ -1,8 +1,8 @@
-package com.techbridge.btm.view.dashboard.blankchart;
+package com.techbridge.btm.view.dashboard.swing;
 
-import com.techbridge.btm.view.dashboard.blankchart.BlankPlotChart;
-import com.techbridge.btm.view.dashboard.blankchart.BlankPlotChatRender;
-import com.techbridge.btm.view.dashboard.blankchart.SeriesSize;
+import com.techbridge.btm.view.dashboard.swing.ModelChart;
+import com.techbridge.btm.view.dashboard.swing.ModelLegend;
+import com.techbridge.btm.view.dashboard.swing.SeriesSize;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -60,39 +60,90 @@ public class Chart extends javax.swing.JPanel {
 
             @Override
             public void renderSeries(BlankPlotChart chart, Graphics2D g2, SeriesSize size, int index) {
-                double totalSeriesWidth = (seriesSize * legends.size()) + (seriesSpace * (legends.size() - 1));
+
+                double totalSeriesWidth = (seriesSize * legends.size())
+                        + (seriesSpace * (legends.size() - 1));
+
                 double x = (size.getWidth() - totalSeriesWidth) / 2;
+
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
-                for (int i = 0; i < legends.size(); i++) {
+
+                double[] values = model.get(index).getValues();
+
+                int safeSize = Math.min(legends.size(), values.length);
+
+                for (int i = 0; i < safeSize; i++) {
+
                     ModelLegend legend = legends.get(i);
-                    double seriesValues = chart.getSeriesValuesOf(model.get(index).getValues()[i], size.getHeight()) * animate;
+
+                    double value = values[i];
+
+                    double seriesValues
+                            = chart.getSeriesValuesOf(value, size.getHeight()) * animate;
+
                     int s = seriesSize / 2;
                     int sy = seriesSize / 3;
-                    int px[] = {(int) (size.getX() + x), (int) (size.getX() + x + s), (int) (size.getX() + x + s), (int) (size.getX() + x)};
-                    int py[] = {(int) (size.getY() + size.getHeight() - seriesValues), (int) (size.getY() + size.getHeight() - seriesValues + sy), (int) (size.getY() + size.getHeight() + sy), (int) (size.getY() + size.getHeight())};
-                    GradientPaint gra = new GradientPaint((int) (size.getX() + x) - s, 0, legend.getColorLight(), (int) (size.getX() + x + s), 0, legend.getColor());
+
+                    int px[] = {
+                        (int) (size.getX() + x),
+                        (int) (size.getX() + x + s),
+                        (int) (size.getX() + x + s),
+                        (int) (size.getX() + x)
+                    };
+
+                    int py[] = {
+                        (int) (size.getY() + size.getHeight() - seriesValues),
+                        (int) (size.getY() + size.getHeight() - seriesValues + sy),
+                        (int) (size.getY() + size.getHeight() + sy),
+                        (int) (size.getY() + size.getHeight())
+                    };
+
+                    GradientPaint gra = new GradientPaint(
+                            (int) (size.getX() + x) - s, 0,
+                            legend.getColorLight(),
+                            (int) (size.getX() + x + s), 0,
+                            legend.getColor()
+                    );
+
                     g2.setPaint(gra);
                     g2.fillPolygon(px, py, px.length);
-                    int px1[] = {(int) (size.getX() + x + s), (int) (size.getX() + x + seriesSize), (int) (size.getX() + x + seriesSize), (int) (size.getX() + x + s)};
-                    int py1[] = {(int) (size.getY() + size.getHeight() - seriesValues + sy), (int) (size.getY() + size.getHeight() - seriesValues), (int) (size.getY() + size.getHeight()), (int) (size.getY() + size.getHeight() + sy)};
+
+                    int px1[] = {
+                        (int) (size.getX() + x + s),
+                        (int) (size.getX() + x + seriesSize),
+                        (int) (size.getX() + x + seriesSize),
+                        (int) (size.getX() + x + s)
+                    };
+
+                    int py1[] = {
+                        (int) (size.getY() + size.getHeight() - seriesValues + sy),
+                        (int) (size.getY() + size.getHeight() - seriesValues),
+                        (int) (size.getY() + size.getHeight()),
+                        (int) (size.getY() + size.getHeight() + sy)
+                    };
+
                     g2.setColor(legend.getColorLight());
                     g2.fillPolygon(px1, py1, px1.length);
-                    int px2[] = {(int) (size.getX() + x), (int) (size.getX() + x + s), (int) (size.getX() + x + seriesSize), (int) (size.getX() + x + s)};
-                    int py2[] = {(int) (size.getY() + size.getHeight() - seriesValues), (int) (size.getY() + size.getHeight() - seriesValues - sy), (int) (size.getY() + size.getHeight() - seriesValues), (int) (size.getY() + size.getHeight() - seriesValues + sy)};
+
+                    int px2[] = {
+                        (int) (size.getX() + x),
+                        (int) (size.getX() + x + s),
+                        (int) (size.getX() + x + seriesSize),
+                        (int) (size.getX() + x + s)
+                    };
+
+                    int py2[] = {
+                        (int) (size.getY() + size.getHeight() - seriesValues),
+                        (int) (size.getY() + size.getHeight() - seriesValues - sy),
+                        (int) (size.getY() + size.getHeight() - seriesValues),
+                        (int) (size.getY() + size.getHeight() - seriesValues + sy)
+                    };
+
                     g2.fillPolygon(px2, py2, px2.length);
+
                     x += seriesSpace + seriesSize;
                 }
-                if (showLabel != null) {
-                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.2f));
-                    Dimension s = getLabelWidth(showLabel, g2);
-                    int space = 3;
-                    int spaceTop = 5;
-                    g2.setColor(new Color(30, 30, 30));
-                    g2.fillRoundRect(labelLocation.x - s.width / 2 - 3, labelLocation.y - s.height - space * 2 - spaceTop, s.width + space * 2, s.height + space * 2, 10, 10);
-                    g2.setColor(new Color(200, 200, 200));
-                    g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-                    g2.drawString(showLabel, labelLocation.x - s.width / 2, labelLocation.y - spaceTop - space * 2);
-                }
+
                 g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
             }
 
@@ -150,6 +201,7 @@ public class Chart extends javax.swing.JPanel {
         animate = 0;
         showLabel = null;
         blankPlotChart.setLabelCount(0);
+        legends.clear();
         model.clear();
         repaint();
     }
@@ -172,7 +224,7 @@ public class Chart extends javax.swing.JPanel {
     private void initComponents() {
 
         panelLegend = new javax.swing.JPanel();
-        blankPlotChart = new com.techbridge.btm.view.dashboard.blankchart.BlankPlotChart();
+        blankPlotChart = new com.techbridge.btm.view.dashboard.swing.BlankPlotChart();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -197,14 +249,14 @@ public class Chart extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(blankPlotChart, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelLegend, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(48, 48, 48)
+                .addComponent(panelLegend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.techbridge.btm.view.dashboard.blankchart.BlankPlotChart blankPlotChart;
+    private com.techbridge.btm.view.dashboard.swing.BlankPlotChart blankPlotChart;
     private javax.swing.JPanel panelLegend;
     // End of variables declaration//GEN-END:variables
 }

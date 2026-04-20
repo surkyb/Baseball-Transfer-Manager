@@ -81,6 +81,9 @@ public class JugadorController {
 
         return datos;
     }
+    public java.util.List<com.techbridge.btm.model.Jugador> listarJugadoresPorEquipo(String nombreEquipo) throws Exception {
+        return service.listarJugadoresPorEquipo(nombreEquipo); // Asegúrate que tu variable del service se llame así
+    }
 }
 
 

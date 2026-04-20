@@ -3,6 +3,7 @@ package com.techbridge.btm.repository;
 import com.techbridge.btm.model.Equipo;
 import com.techbridge.btm.model.Jugador;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,12 +18,15 @@ public interface EquipoRepository {
     Equipo buscarEquipo(String nombre);
     
     // Este otro metodo lo creamos para eliminar un equipo
-    void eliminarEquipo(String nombre); 
+    void eliminarEquipo(String nombre) throws Exception; 
     
     // Metodo para mostrar los jugadores de un equipo
     ArrayList<Jugador> buscarPorEquipo(int idEquipo);
     
     // Metodo para mostrar los equipos
     java.util.List<Equipo> obtenerTodosLosEquipos();
+    
+    java.util.List<com.techbridge.btm.model.Equipo> listarEquiposParaTabla() throws Exception;
+    
     
 }

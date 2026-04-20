@@ -20,4 +20,6 @@ public interface EquipoViewInterface {
     
     //limpiar campos
     void limpiarCampos();
+    
+    void cargarTablaEquipos();
 }

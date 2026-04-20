@@ -87,4 +87,7 @@ public class JugadorService {
     public String obtenerDetallesJugador(String nombreJugador) throws Exception {
         return jugadorRepository.obtenerDetallesJugador(nombreJugador);
     }
+    public java.util.List<com.techbridge.btm.model.Jugador> listarJugadoresPorEquipo(String nombreEquipo) throws Exception {
+        return jugadorRepository.listarJugadoresPorEquipo(nombreEquipo); // Asegúrate que tu variable del repo se llame así
+    }
 }

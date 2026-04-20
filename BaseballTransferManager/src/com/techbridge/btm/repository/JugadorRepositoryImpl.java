@@ -270,4 +270,36 @@ public class JugadorRepositoryImpl implements JugadorRepository {
         }
         return detalles.toString();
     }
+    @Override
+    public java.util.List<com.techbridge.btm.model.Jugador> listarJugadoresPorEquipo(String nombreEquipo) throws Exception {
+        java.util.List<com.techbridge.btm.model.Jugador> lista = new java.util.ArrayList<>();
+
+        // Ajusta los nombres de las tablas/columnas según tu base de datos si es necesario
+        String sql = "SELECT j.id, j.nombre, j.posicion, j.edad, j.valor " +
+                     "FROM jugador j " +
+                     "INNER JOIN contrato c ON j.id = c.id_jugador " +
+                     "INNER JOIN equipo e ON c.id_equipo = e.id " +
+                     "WHERE e.nombre = ?";
+
+        try (java.sql.Connection con = com.techbridge.btm.dbconnection.DatabaseConnection.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, nombreEquipo);
+
+            try (java.sql.ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    com.techbridge.btm.model.Jugador ju = new com.techbridge.btm.model.Jugador();
+                    // Asegúrate de que estos setters coincidan con tu modelo Jugador
+                    ju.setId(rs.getInt("id")); 
+                    ju.setNombre(rs.getString("nombre"));
+                    ju.setPosicion(rs.getString("posicion"));
+                    ju.setEdad(rs.getInt("edad"));
+                    ju.setValor(rs.getDouble("valor"));
+
+                    lista.add(ju);
+                }
+            }
+        }
+        return lista;
+    }
 }

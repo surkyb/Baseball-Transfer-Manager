@@ -1,5 +1,9 @@
 package com.techbridge.btm.view.form;
 
+import com.techbridge.btm.controller.EquipoController;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Surky
@@ -21,51 +25,79 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         this.controller = new com.techbridge.btm.controller.EquipoController(service, this);
 
        
-        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaEquipos.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 // Obtenemos exactamente en qué fila y columna se hizo el clic
-                int filaAfectada = jTable1.rowAtPoint(evt.getPoint());
-                int columnaAfectada = jTable1.columnAtPoint(evt.getPoint());
+                int filaAfectada = tablaEquipos.rowAtPoint(evt.getPoint());
+                int columnaAfectada = tablaEquipos.columnAtPoint(evt.getPoint());
 
-                if (columnaAfectada == 3 && filaAfectada >= 0) {
-
-                    //  tomsmos el valor de la celda 
-                    Object valorCelda = jTable1.getValueAt(filaAfectada, 1);
-                    // si ta vacia
-                    if (valorCelda == null || valorCelda.toString().trim().isEmpty()) {
-                        javax.swing.JOptionPane.showMessageDialog(
-                                null,
-                                "La celda está vacía. No hay ningún Equipo para eliminar en esta fila.",
-                                "Aviso",
-                                javax.swing.JOptionPane.WARNING_MESSAGE
-                        );
-                        return;
+                if (filaAfectada >= 0) {
+                    
+                    // --- NUEVA LÓGICA: Cargar Roster al hacer clic en cualquier parte de la fila ---
+                    Object valorCeldaNombre = tablaEquipos.getValueAt(filaAfectada, 2);
+                    if (valorCeldaNombre != null && !valorCeldaNombre.toString().trim().isEmpty()) {
+                        String nombreEquipoParaRoster = valorCeldaNombre.toString();
+                        cargarTablaRoster(nombreEquipoParaRoster); 
                     }
+                    // -------------------------------------------------------------------------------
 
-                    String nombreEquipo = valorCelda.toString();
-                    int opcion = javax.swing.JOptionPane.showConfirmDialog(
-                            null,
-                            "¿Estás absolutamente seguro de eliminar a " + nombreEquipo + " del sistema?\nEsta acción borrará todos sus contratos y no se puede deshacer.",
-                            "Eliminar Equipo",
-                            javax.swing.JOptionPane.YES_NO_OPTION,
-                            javax.swing.JOptionPane.ERROR_MESSAGE
-                    );
+                    // Lógica original de borrar (solo si es la columna 4)
+                    if (columnaAfectada == 4) {
 
-                    //Si el usuario dice "Si"
-                    if (opcion == javax.swing.JOptionPane.YES_OPTION) {
-                        //;p eliminas
+                        // tomamos el valor de la celda 
+                        Object valorCelda = tablaEquipos.getValueAt(filaAfectada, 2);
+                        // si ta vacia
+                        if (valorCelda == null || valorCelda.toString().trim().isEmpty()) {
+                            javax.swing.JOptionPane.showMessageDialog(
+                                    null,
+                                    "La celda está vacía. No hay ningún Equipo para eliminar en esta fila.",
+                                    "Aviso",
+                                    javax.swing.JOptionPane.WARNING_MESSAGE
+                            );
+                            return;
+                        }
+
+                        String nombreEquipo = valorCelda.toString();
+                        int opcion = javax.swing.JOptionPane.showConfirmDialog(
+                                null,
+                                "¿Estás absolutamente seguro de eliminar a " + nombreEquipo + " del sistema?\nEsta acción borrará todos sus contratos y no se puede deshacer.",
+                                "Eliminar Equipo",
+                                javax.swing.JOptionPane.YES_NO_OPTION,
+                                javax.swing.JOptionPane.ERROR_MESSAGE
+                        );
+
+                        // Si el usuario dice "Si"
+                        if (opcion == javax.swing.JOptionPane.YES_OPTION) {
+                            try {
+                                // 1. Mandamos el nombre al controlador para que lo borre en MySQL
+                                controller.eliminarEquipo(nombreEquipo);
+
+                                // 2. Recargamos la tabla de equipos
+                                cargarTablaEquipos();
+                                
+                                // 3. Limpiamos la tabla del roster porque el equipo ya no existe
+                                ((javax.swing.table.DefaultTableModel)tablaRoster.getModel()).setRowCount(0);
+
+                                // 4. Avisamos que todo salió bien
+                                javax.swing.JOptionPane.showMessageDialog(null, "Franquicia eliminada exitosamente.");
+
+                            } catch (Exception e) {
+                                // Si hay algún error en SQL, se lo mostramos al usuario
+                                javax.swing.JOptionPane.showMessageDialog(null, "Error al eliminar: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
                     }
                 }
             }
         });
-
+        cargarTablaEquipos();
         //actualizarTablaEquipos();
     }
 
     private void initTablaEquipos() {
 
-        jTable1.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+        tablaEquipos.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public java.awt.Component getTableCellRendererComponent(
                     javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -84,19 +116,19 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
             }
         });
 
-        if (jTable1.getParent() != null) {
-            jTable1.getParent().setBackground(java.awt.Color.WHITE);
+        if (tablaEquipos.getParent() != null) {
+            tablaEquipos.getParent().setBackground(java.awt.Color.WHITE);
         }
 
-        jTable1.setShowHorizontalLines(true);
-        jTable1.setShowVerticalLines(true);
-        jTable1.setGridColor(new java.awt.Color(200, 200, 200));
-        jTable1.setRowHeight(30);
+        tablaEquipos.setShowHorizontalLines(true);
+        tablaEquipos.setShowVerticalLines(true);
+        tablaEquipos.setGridColor(new java.awt.Color(200, 200, 200));
+        tablaEquipos.setRowHeight(30);
     }
 
     private void initTablaRoster() {
 
-        jTable2.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+        tablaRoster.getTableHeader().setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
             public java.awt.Component getTableCellRendererComponent(
                     javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -115,14 +147,14 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
             }
         });
 
-        if (jTable2.getParent() != null) {
-            jTable2.getParent().setBackground(java.awt.Color.WHITE);
+        if (tablaRoster.getParent() != null) {
+            tablaRoster.getParent().setBackground(java.awt.Color.WHITE);
         }
 
-        jTable2.setShowHorizontalLines(true);
-        jTable2.setShowVerticalLines(true);
-        jTable2.setGridColor(new java.awt.Color(200, 200, 200));
-        jTable2.setRowHeight(30);
+        tablaRoster.setShowHorizontalLines(true);
+        tablaRoster.setShowVerticalLines(true);
+        tablaRoster.setGridColor(new java.awt.Color(200, 200, 200));
+        tablaRoster.setRowHeight(30);
     }
 
     @Override
@@ -178,12 +210,12 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         header22 = new com.techbridge.btm.view.components.Header2();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaEquipos = new javax.swing.JTable();
         pnlGestionarJugador = new com.techbridge.btm.view.dashboard.swing.RoundPanel();
         header23 = new com.techbridge.btm.view.components.Header2();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaRoster = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(242, 241, 246));
@@ -322,24 +354,24 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaEquipos.setBackground(new java.awt.Color(255, 255, 255));
+        tablaEquipos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "sel", "Nombre del equipo", "presupuesto", "borrar"
+                "null", "sel", "Nombre del equipo", "presupuesto", "borrar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.Boolean.class, java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -350,8 +382,11 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        tablaEquipos.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tablaEquipos);
+        if (tablaEquipos.getColumnModel().getColumnCount() > 0) {
+            tablaEquipos.getColumnModel().getColumn(0).setPreferredWidth(10);
+        }
 
         javax.swing.GroupLayout pnlJugadoresExistentesLayout = new javax.swing.GroupLayout(pnlJugadoresExistentes);
         pnlJugadoresExistentes.setLayout(pnlJugadoresExistentesLayout);
@@ -395,8 +430,8 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
                 .addContainerGap())
         );
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaRoster.setBackground(new java.awt.Color(255, 255, 255));
+        tablaRoster.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -409,7 +444,7 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
@@ -423,10 +458,10 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
                 return canEdit [columnIndex];
             }
         });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setPreferredWidth(10);
+        tablaRoster.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(tablaRoster);
+        if (tablaRoster.getColumnModel().getColumnCount() > 0) {
+            tablaRoster.getColumnModel().getColumn(0).setPreferredWidth(10);
         }
 
         javax.swing.GroupLayout pnlGestionarJugadorLayout = new javax.swing.GroupLayout(pnlGestionarJugador);
@@ -490,7 +525,7 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
 
 
     private void btnCrearEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearEquipoActionPerformed
-        controller.registrarEquipo();
+       controller.registrarEquipo();
     }//GEN-LAST:event_btnCrearEquipoActionPerformed
 
     private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
@@ -515,13 +550,65 @@ public class FormEquipos extends javax.swing.JPanel implements com.techbridge.bt
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel pnlCreateJugador;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel pnlGestionarJugador;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel pnlJugadoresExistentes;
     private com.techbridge.btm.view.dashboard.swing.RoundPanel roundPanel7;
+    private javax.swing.JTable tablaEquipos;
+    private javax.swing.JTable tablaRoster;
     private com.techbridge.btm.view.dashboard.swing.TextFieldRounded txtNombre;
     private com.techbridge.btm.view.dashboard.swing.TextFieldRounded txtPresupuesto;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void cargarTablaEquipos() {
+        try {
+            javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaEquipos.getModel();
+
+            // Limpiamos la tabla por si tenía datos viejos
+            modelo.setRowCount(0);
+
+            
+            java.util.List<com.techbridge.btm.model.Equipo> lista = controller.listarEquiposParaTabla();
+
+            for (com.techbridge.btm.model.Equipo eq : lista) {
+                Object[] fila = new Object[5]; 
+                fila[0] = false; 
+                fila[1] = false;            
+                fila[2] = eq.getNombre();
+                fila[3] = eq.getPresupuesto();
+                fila[4] = "Borrar";         
+                
+                modelo.addRow(fila);
+            } 
+            
+        } catch (Exception e) { // Aquí cierra el try e inicia el catch
+            mostrarError("Error al cargar la tabla de equipos: " + e.getMessage());
+        } 
+    } 
+    public void cargarTablaRoster(String nombreEquipo) {
+    try {
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tablaRoster.getModel();
+        modelo.setRowCount(0); // Limpiar datos anteriores
+
+        // Debes pedirle los jugadores al controlador de jugadores
+        // Instanciamos el repositorio de los jugadores directamente
+        com.techbridge.btm.repository.JugadorRepositoryImpl jugadorRepo = new com.techbridge.btm.repository.JugadorRepositoryImpl();
+
+        // Le pedimos el roster a ese repositorio
+        java.util.List<com.techbridge.btm.model.Jugador> roster = jugadorRepo.listarJugadoresPorEquipo(nombreEquipo);
+
+        for (com.techbridge.btm.model.Jugador ju : roster) {
+            Object[] fila = new Object[4]; // 4 columnas en tu diseño inferior
+            fila[0] = ju.getNombre();
+            fila[1] = ju.getPosicion();
+            fila[2] = ju.getEdad();
+            fila[3] = ju.getValor();
+
+            modelo.addRow(fila);
+        }
+    } catch (Exception e) {
+        mostrarError("Error al cargar el roster: " + e.getMessage());
+    }
+}
 }

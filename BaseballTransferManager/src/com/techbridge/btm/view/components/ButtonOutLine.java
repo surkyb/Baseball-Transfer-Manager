@@ -1,4 +1,4 @@
-package com.techbridge.btm.view.swing;
+package com.techbridge.btm.view.components;
 
 import java.awt.Color;
 import java.awt.Cursor;

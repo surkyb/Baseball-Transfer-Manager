@@ -67,6 +67,20 @@ public class JugadorController {
     public void eliminarJugador(String nombreJugador) throws Exception {
         service.eliminarJugador(nombreJugador);
     }
+    public List<Object[]> listarJugadoresParaTabla() {
+        List<Jugador> jugadores = service.listarTodosLosJugadores();
+        List<Object[]> datos = new ArrayList<>();
+
+        for (Jugador j : jugadores) {
+            datos.add(new Object[]{
+                j.getId(),
+                j.getNombre(),
+                j.getPosicion()
+            });
+        }
+
+        return datos;
+    }
 }
 
 

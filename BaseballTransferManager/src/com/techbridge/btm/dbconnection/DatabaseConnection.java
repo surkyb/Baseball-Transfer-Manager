@@ -12,7 +12,7 @@ import java.sql.*;
 public class DatabaseConnection {
     final static String url = "jdbc:mysql://localhost:3306/BaseballManagerBD";
     final static String user = "root";
-    final static String password = "SUSky09_";
+    final static String password = "admin";
     static Connection conexion = null;
     
     private DatabaseConnection () {}

@@ -108,7 +108,7 @@
           <Properties>
             <Property name="borderSize" type="int" value="2"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/com/techbridge/btm/view/icon/profile.jpg"/>
+              <Image iconType="3" name="/com/techbridge/btm/view/icon/Captura de pantalla 2026-04-19 220456.png"/>
             </Property>
           </Properties>
 
@@ -139,7 +139,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane1" pref="520" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>

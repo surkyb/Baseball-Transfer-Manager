@@ -16,4 +16,5 @@ public interface TransferenciaRepository {
     // Este otro metodo lo creamos para eliminar una transferencia
     void eliminarTransferencia(int idTransferencia);
     
+    java.util.List<Object[]> listarHistorialParaTabla();
 }

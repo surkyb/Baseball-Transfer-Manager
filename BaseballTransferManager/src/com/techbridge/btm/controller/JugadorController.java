@@ -46,21 +46,45 @@ public class JugadorController {
     public java.util.List<Jugador> listarTodosLosJugadores() {
         return service.listarTodosLosJugadores();
     }
+    //metodo para hacer agente libre un jugador
+    public void liberarJugador(String nombreJugador) throws Exception {
+        service.liberarJugador(nombreJugador);
+    }
     
-    public List<Object[]> listarJugadoresParaTabla() {
-    List<Jugador> jugadores = service.listarTodosLosJugadores();
-    List<Object[]> datos = new ArrayList<>();
-
-    for (Jugador j : jugadores) {
-        datos.add(new Object[]{
-            j.getId(),
-            j.getNombre(),
-            j.getPosicion()
-        });
+    public void asignarEquipo(String nombreJugador, String nombreEquipo, String salario, String fInicio, String fFin) throws Exception {
+        service.asignarEquipo(nombreJugador, nombreEquipo, salario, fInicio, fFin);
+    }
+    
+    public void renovarContrato(String nombreJugador, String nuevoSalario, String nuevaFechaFin) throws Exception {
+        service.renovarContrato(nombreJugador, nuevoSalario, nuevaFechaFin);
+    }
+    
+    public String obtenerDetallesJugador(String nombreJugador) throws Exception {
+        return service.obtenerDetallesJugador(nombreJugador);
     }
 
-    return datos;
+    // Método para eliminar jugador conectado a la base de datos
+    public void eliminarJugador(String nombreJugador) throws Exception {
+        service.eliminarJugador(nombreJugador);
+    }
+    public List<Object[]> listarJugadoresParaTabla() {
+        List<Jugador> jugadores = service.listarTodosLosJugadores();
+        List<Object[]> datos = new ArrayList<>();
+
+        for (Jugador j : jugadores) {
+            datos.add(new Object[]{
+                j.getId(),
+                j.getNombre(),
+                j.getPosicion()
+            });
+        }
+
+        return datos;
+    }
+    public java.util.List<com.techbridge.btm.model.Jugador> listarJugadoresPorEquipo(String nombreEquipo) throws Exception {
+        return service.listarJugadoresPorEquipo(nombreEquipo); // Asegúrate que tu variable del service se llame así
+    }
 }
-}
+
 
     

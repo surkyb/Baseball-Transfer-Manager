@@ -179,4 +179,24 @@ public class EquipoRepositoryImpl implements EquipoRepository {
         }
         return lista;
     }
+    @Override
+    public java.util.List<com.techbridge.btm.model.Equipo> listarEquiposParaTabla() throws Exception {
+        java.util.List<com.techbridge.btm.model.Equipo> lista = new java.util.ArrayList<>();
+        String sql = "SELECT id, nombre, presupuesto FROM equipo";
+
+        try (java.sql.Connection con = com.techbridge.btm.dbconnection.DatabaseConnection.getConexion();
+             java.sql.PreparedStatement ps = con.prepareStatement(sql);
+             java.sql.ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                com.techbridge.btm.model.Equipo eq = new com.techbridge.btm.model.Equipo();
+                eq.setIdEquipo(rs.getInt("id"));
+                eq.setNombre(rs.getString("nombre"));
+                eq.setPresupuesto(rs.getDouble("presupuesto"));
+                lista.add(eq);
+            }
+        }
+        return lista;
+    }
+    
 }

@@ -5,6 +5,7 @@ import com.techbridge.btm.model.Jugador;
 import com.techbridge.btm.repository.EquipoRepository;
 import com.techbridge.btm.repository.EquipoRepositoryImpl;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Clase: EquipoService
@@ -89,4 +90,8 @@ public class EquipoService {
     public java.util.List<Equipo> listarEquipos() {
         return equipoRepo.obtenerTodosLosEquipos();
     }
+    public java.util.List<com.techbridge.btm.model.Equipo> listarEquiposParaTabla() throws Exception {
+        return equipoRepo.listarEquiposParaTabla();
+    }
+    
 }

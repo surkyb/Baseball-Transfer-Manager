@@ -26,6 +26,7 @@ public interface JugadorRepository {
     //metodo para renovar un contrato
     void renovarContrato(String nombreJugador, String nuevoSalario, String nuevaFechaFin) throws Exception;
     
+    //metodo para crear los detalles del jugador
     String obtenerDetallesJugador(String nombreJugador) throws Exception;
     
     java.util.List<com.techbridge.btm.model.Jugador> listarJugadoresPorEquipo(String nombreEquipo) throws Exception;

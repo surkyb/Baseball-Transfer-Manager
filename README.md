@@ -1,6 +1,5 @@
 # Sistema de Mercado de Fichajes
-Este proyecto en Java simula un sistema de gestión de fichajes de jugadores de béisbol, inspirado en el funcionamiento real de ligas profesionales.  
-El sistema permite administrar jugadores, equipos y transferencias.
+Este proyecto en Java simula un sistema de gestión de fichajes de jugadores de béisbol, inspirado en el funcionamiento real de ligas profesionales. El sistema permite administrar jugadores, equipos y transferencias.
 
 ## Funciones principales
 - Registro de jugadores

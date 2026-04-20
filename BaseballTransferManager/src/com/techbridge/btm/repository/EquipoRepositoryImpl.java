@@ -116,7 +116,8 @@ public class EquipoRepositoryImpl implements EquipoRepository {
     public ArrayList<Jugador> buscarPorEquipo(int idEquipo){
     
         List<Jugador> jugador = new ArrayList();
-        String sql = "SELECT j.nombre AS nombre_jugador, e.nombre AS nombre_equipo " +
+        String sql = "SELECT j.id AS id_jugador, j.nombre AS nombre_jugador, j.posicion, j.edad, j.valor, "+
+                    "e.id AS id_equipo, e.nombre AS nombre_equipo " +
                      "FROM jugador j " +
                      "JOIN contrato c ON j.id = c.id_jugador " +
                      "JOIN equipo e ON c.id_equipo = e.id " +
@@ -137,6 +138,9 @@ public class EquipoRepositoryImpl implements EquipoRepository {
                 
                 ju.setId(rs.getInt("id"));
                 ju.setNombre(rs.getString("nombre_jugador"));
+                ju.setPosicion(rs.getString("posicion")); 
+                ju.setEdad(rs.getInt("edad"));           
+                ju.setValor(rs.getDouble("valor"));
                 
                 Equipo equi = new Equipo();
                 equi.setIdEquipo(rs.getInt("id_equipo"));
@@ -154,4 +158,25 @@ public class EquipoRepositoryImpl implements EquipoRepository {
         return (ArrayList<Jugador>) jugador;
     }
     
+    @Override
+    public java.util.List<Equipo> obtenerTodosLosEquipos() {
+        java.util.List<Equipo> lista = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM equipo";
+        
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                Equipo equip = new Equipo();
+                equip.setIdEquipo(rs.getInt("id"));
+                equip.setNombre(rs.getString("nombre"));
+                equip.setPresupuesto(rs.getDouble("presupuesto"));
+                lista.add(equip);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }

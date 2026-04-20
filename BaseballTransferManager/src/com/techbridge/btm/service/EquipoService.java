@@ -85,4 +85,8 @@ public class EquipoService {
         //Retornamos la lista obtenida desde el repositorio
         return equipoRepo.buscarPorEquipo(idEquipo);
     }
+
+    public java.util.List<Equipo> listarEquipos() {
+        return equipoRepo.obtenerTodosLosEquipos();
+    }
 }

@@ -2,6 +2,7 @@ package com.techbridge.btm.controller;
 
 import com.techbridge.btm.service.TransferenciaService;
 import com.techbridge.btm.view.TransferenciaViewInterface;
+import java.util.List;
 /**
  *
  * @author Joshua Abreu
@@ -15,6 +16,11 @@ public class TransferenciaController {
     public TransferenciaController(TransferenciaViewInterface view, TransferenciaService service) {
         this.view = view;
         this.service = service;
+    }
+    
+    public TransferenciaController(TransferenciaService service) {
+        this.service = service;
+        this.view = null;
     }
 
     // metodo principal conectado a la vista
@@ -53,5 +59,9 @@ public class TransferenciaController {
         // metodo opcional para pruebas o uso directo
     public void transferirJugador(int idJugador, int idOrigen, int idDestino, double monto) throws Exception {
         service.transferirJugador(idJugador, idOrigen, idDestino, monto);
+    }
+    
+    public List<Object[]> listarHistorial() {
+        return service.listarHistorial();
     }
 }

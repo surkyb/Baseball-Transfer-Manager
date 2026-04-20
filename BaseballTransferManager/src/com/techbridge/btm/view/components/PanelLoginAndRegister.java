@@ -1,8 +1,5 @@
 package com.techbridge.btm.view.components;
 
-import com.techbridge.btm.view.swing.Button;
-import com.techbridge.btm.view.swing.MyPasswordField;
-import com.techbridge.btm.view.swing.MyTextField;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;

@@ -6,6 +6,7 @@ import com.techbridge.btm.model.Transferencia;
 import com.techbridge.btm.repository.ContratoRepository;
 import com.techbridge.btm.repository.TransferenciaRepository;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -59,4 +60,8 @@ public class TransferenciaService {
         contratoRepository.actualizarEquipoJugador(idJugador, idEquipoDestino);
                 
     } 
+    
+    public List<Object[]> listarHistorial() {
+        return transferenciaRepository.listarHistorialParaTabla();
+    }
 }

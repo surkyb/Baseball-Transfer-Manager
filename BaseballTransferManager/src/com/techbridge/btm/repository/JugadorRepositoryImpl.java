@@ -108,4 +108,29 @@ public class JugadorRepositoryImpl implements JugadorRepository {
             e.printStackTrace();
         }
     }
+    @Override
+    public java.util.List<Jugador> listarTodos() {
+        java.util.List<Jugador> lista = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM jugador";
+        
+        try (Connection con = DatabaseConnection.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet resul = ps.executeQuery()) {
+            
+            // Usamos un while porque pueden ser muchos jugadores
+            while (resul.next()) {
+                Jugador ju = new Jugador();
+                ju.setId(resul.getInt("id"));
+                ju.setNombre(resul.getString("nombre"));
+                ju.setEdad(resul.getInt("edad"));
+                ju.setPosicion(resul.getString("posicion"));
+                ju.setValor(resul.getDouble("valor"));
+                
+                lista.add(ju); // Lo metemos en la lista
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }

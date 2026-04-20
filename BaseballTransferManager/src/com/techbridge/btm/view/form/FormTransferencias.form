@@ -38,6 +38,10 @@
                       <EmptySpace min="-2" pref="450" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="429" max="-2" attributes="0"/>
+                      <Component id="btnNuevaTransferencia" min="-2" pref="225" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace pref="88" max="32767" attributes="0"/>
           </Group>
@@ -50,7 +54,9 @@
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="pnlJugadoresExistentes" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="205" max="32767" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="btnNuevaTransferencia" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="160" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -199,6 +205,17 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Transferencias"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnNuevaTransferencia">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="7e" green="53" red="21" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Agregar transferencia"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNuevaTransferenciaActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

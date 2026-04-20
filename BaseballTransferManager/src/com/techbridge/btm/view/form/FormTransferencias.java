@@ -20,7 +20,109 @@ public class FormTransferencias extends javax.swing.JPanel {
         inicializarControlador(); // Conecta con la BD
         configurarTabla();        
         cargarTablaHistorial();   
+        
+        
+        btnNuevaTransferencia.addActionListener(e -> abrirDialogoTransferencia());
     }
+    
+    
+    // Método para crear y mostrar el formulario emergente
+    private void abrirDialogoTransferencia() {
+   java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        javax.swing.JDialog dialogo = new javax.swing.JDialog((java.awt.Frame) parentWindow, "Registrar Transferencia", true);
+        dialogo.setSize(400, 350);
+        dialogo.setLocationRelativeTo(parentWindow);
+        dialogo.setLayout(new java.awt.BorderLayout());
+        
+        javax.swing.JPanel pnlForm = new javax.swing.JPanel(new java.awt.GridLayout(5, 2, 10, 20));
+        pnlForm.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // --- CAMBIO: Usamos ComboBox en lugar de TextField ---
+        pnlForm.add(new javax.swing.JLabel("Jugador:"));
+        javax.swing.JComboBox<ComboItem> cmbJugador = new javax.swing.JComboBox<>();
+        pnlForm.add(cmbJugador);
+
+        pnlForm.add(new javax.swing.JLabel("Equipo Origen:"));
+        javax.swing.JComboBox<ComboItem> cmbOrigen = new javax.swing.JComboBox<>();
+        pnlForm.add(cmbOrigen);
+
+        pnlForm.add(new javax.swing.JLabel("Equipo Destino:"));
+        javax.swing.JComboBox<ComboItem> cmbDestino = new javax.swing.JComboBox<>();
+        pnlForm.add(cmbDestino);
+
+        pnlForm.add(new javax.swing.JLabel("Monto ($):"));
+        javax.swing.JTextField txtMonto = new javax.swing.JTextField();
+        pnlForm.add(txtMonto);
+
+        try (java.sql.Connection con = com.techbridge.btm.dbconnection.DatabaseConnection.getConexion();
+             java.sql.Statement st = con.createStatement()) {
+            
+            java.sql.ResultSet rsJug = st.executeQuery("SELECT id, nombre FROM jugador");
+            while (rsJug.next()) {
+                cmbJugador.addItem(new ComboItem(rsJug.getInt("id"), rsJug.getString("nombre")));
+            }
+            
+            java.sql.ResultSet rsEq = st.executeQuery("SELECT id, nombre FROM equipo");
+            while (rsEq.next()) {
+                ComboItem equipo = new ComboItem(rsEq.getInt("id"), rsEq.getString("nombre"));
+                cmbOrigen.addItem(equipo);
+                cmbDestino.addItem(equipo);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error cargando listas: " + ex.getMessage());
+        }
+
+        // Botones
+        javax.swing.JButton btnCancelar = new javax.swing.JButton("Cancelar");
+        btnCancelar.addActionListener(e -> dialogo.dispose()); 
+        pnlForm.add(btnCancelar);
+
+        javax.swing.JButton btnGuardar = new javax.swing.JButton("Guardar");
+        btnGuardar.setBackground(new java.awt.Color(191, 39, 57)); 
+        btnGuardar.setForeground(java.awt.Color.WHITE);
+        pnlForm.add(btnGuardar);
+
+        // Acción del botón guardar
+        btnGuardar.addActionListener(e -> {
+            try {
+                // Obtenemos los Items seleccionados
+                ComboItem jugadorSel = (ComboItem) cmbJugador.getSelectedItem();
+                ComboItem origenSel = (ComboItem) cmbOrigen.getSelectedItem();
+                ComboItem destinoSel = (ComboItem) cmbDestino.getSelectedItem();
+
+                if (jugadorSel == null || origenSel == null || destinoSel == null) {
+                    javax.swing.JOptionPane.showMessageDialog(dialogo, "Asegúrese de seleccionar todos los campos.");
+                    return;
+                }
+
+                // Extraemos los IDs ocultos
+                int idJug = jugadorSel.getId();
+                int idOri = origenSel.getId();
+                int idDes = destinoSel.getId();
+                double monto = Double.parseDouble(txtMonto.getText().trim());
+
+                // 1. Guardamos la transferencia en la base de datos
+                controller.transferirJugador(idJug, idOri, idDes, monto);
+
+                javax.swing.JOptionPane.showMessageDialog(dialogo, "Transferencia guardada exitosamente.");
+                dialogo.dispose(); 
+                
+                cargarTablaHistorial(); 
+
+            } catch (NumberFormatException ex) {
+                javax.swing.JOptionPane.showMessageDialog(dialogo, "Por favor ingrese números válidos.", "Error de Formato", javax.swing.JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                javax.swing.JOptionPane.showMessageDialog(dialogo, ex.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialogo.add(pnlForm, java.awt.BorderLayout.CENTER);
+        
+        dialogo.setVisible(true); 
+    }
+    
+    
+    
 
     private void inicializarControlador() {
         TransferenciaRepositoryImpl repoTrans = new TransferenciaRepositoryImpl();
@@ -52,6 +154,24 @@ public class FormTransferencias extends javax.swing.JPanel {
         });
         
     }
+    class ComboItem {
+    private int id;
+    private String nombre;
+
+    public ComboItem(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return nombre; // Esto es lo que verá el usuario en la lista
+    }
+}
 
     public void cargarTablaHistorial() {
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
@@ -77,6 +197,7 @@ public class FormTransferencias extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btnNuevaTransferencia = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(242, 241, 246));
         setForeground(new java.awt.Color(255, 255, 255));
@@ -164,6 +285,10 @@ public class FormTransferencias extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(30, 30, 30));
         jLabel1.setText("Transferencias");
 
+        btnNuevaTransferencia.setBackground(new java.awt.Color(33, 83, 126));
+        btnNuevaTransferencia.setText("Agregar transferencia");
+        btnNuevaTransferencia.addActionListener(this::btnNuevaTransferenciaActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -175,7 +300,10 @@ public class FormTransferencias extends javax.swing.JPanel {
                         .addComponent(pnlJugadoresExistentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(450, 450, 450)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(429, 429, 429)
+                        .addComponent(btnNuevaTransferencia, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(88, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -185,12 +313,19 @@ public class FormTransferencias extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnlJugadoresExistentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(205, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnNuevaTransferencia)
+                .addContainerGap(160, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnNuevaTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaTransferenciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnNuevaTransferenciaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNuevaTransferencia;
     private com.techbridge.btm.view.components.Header2 header22;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

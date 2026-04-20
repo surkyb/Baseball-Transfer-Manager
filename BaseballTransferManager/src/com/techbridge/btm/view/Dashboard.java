@@ -1,6 +1,7 @@
-package com.techbridge.btm;
+package com.techbridge.btm.view;
 
 import com.techbridge.btm.view.event.EventMenu;
+import com.techbridge.btm.view.form.FormAcercaDe;
 import com.techbridge.btm.view.form.FormComparar;
 import com.techbridge.btm.view.form.FormEquipos;
 import com.techbridge.btm.view.form.FormEstadisticas;
@@ -14,51 +15,91 @@ import java.awt.Component;
  *
  * @author surky
  */
-public class dashboardPrueba extends javax.swing.JFrame {
+public class Dashboard extends javax.swing.JFrame {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(dashboardPrueba.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Dashboard.class.getName());
 
     /**
      * Creates new form dashboardPruebaS
      */
    
-    public dashboardPrueba() {
+    public Dashboard() {
         initComponents();
         setBackground(new Color(0, 0, 0, 0));
 
         EventMenu event = new EventMenu() {
             @Override
             public void selected(int index) {
-
-                switch (index) {
-                    case 0:
-                        showForm(new FormInicio());
-                        break;
-                    case 1:
-                        showForm(new FormJugadores());
-                        break;
-                    case 2: 
-                        showForm(new FormEquipos());
-                        break;
-                    case 3: 
-                        showForm(new FormTransferencias());
-                        break;
-                    case 4:
-                        showForm(new FormEstadisticas());
-                        break;
-                    case 5:
-                        showForm(new FormComparar());
-                        break;
-                    default: 
-                        break;
-                }
-
+                procesarNavegacion(index);
             }
         };
 
         miMenu2.initMenu(event);
         showForm(new FormInicio());
 
+    }
+    /**
+     * Se encarga de enrutar la aplicación según el índice seleccionado en el menú lateral.
+     */
+    private void procesarNavegacion(int index) {
+        switch (index) {
+            case 0:
+                showForm(new FormInicio());
+                break;
+            case 1:
+                showForm(new FormJugadores());
+                break;
+            case 2: 
+                showForm(new FormEquipos());
+                break;
+            case 3: 
+                showForm(new FormTransferencias());
+                break;
+            case 4:
+                showForm(new FormEstadisticas());
+                break;
+            case 5:
+                showForm(new FormComparar());
+                break;
+            case 6:
+                showForm(new FormAcercaDe());
+                break;
+            case 7:
+                cerrarSesion();
+                break;
+            default: 
+                break;
+        }
+    }
+
+    /**
+     * Maneja el flujo de seguridad para cerrar la sesión actual y volver al Login.
+     */
+    private void cerrarSesion() {
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                this, 
+                "¿Estás seguro de que deseas cerrar sesión?",
+                "Cerrar Sesión",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            
+            // Cerramos el Dashboard
+            this.dispose();
+
+            // Volvemos a instanciar el LoginJFrame
+            java.awt.EventQueue.invokeLater(() -> {
+                com.techbridge.btm.repository.UsuarioRepository repo = new com.techbridge.btm.repository.UsuarioRepositoryImpl();
+                com.techbridge.btm.service.AuthService service = new com.techbridge.btm.service.AuthService(repo);
+                com.techbridge.btm.controller.UsuarioController controller = new com.techbridge.btm.controller.UsuarioController(service);
+
+                LoginJFrame loginView = new LoginJFrame(controller);
+                loginView.setVisible(true);
+            });
+        }
+    
     }
         private void showForm(Component com) {
         body.removeAll();
@@ -130,7 +171,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
+   /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -152,7 +193,7 @@ public class dashboardPrueba extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new dashboardPrueba().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new Dashboard().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

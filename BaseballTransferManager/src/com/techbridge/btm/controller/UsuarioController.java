@@ -1,6 +1,7 @@
 package com.techbridge.btm.controller;
 
 import com.techbridge.btm.DTO.LoginDTO;
+import com.techbridge.btm.view.Dashboard;
 import com.techbridge.btm.model.Usuario;
 import com.techbridge.btm.service.AuthService;
 import com.techbridge.btm.view.AuthViewInterface;
@@ -40,8 +41,15 @@ public class UsuarioController {
         try {
             // Llamar al servicio
             if (authService.login(dto)) {
-                loginView.mostrarMensajeExito("Ha sido logeado satisfactoriamente");
                 loginView.cerrarVentana();
+                
+              java.awt.EventQueue.invokeLater(new Runnable() {
+                    public void run() {
+                        Dashboard dashboard = new Dashboard();
+                        dashboard.setVisible(true);
+                    }
+                });
+              
             }
 
         } catch (Exception e) {
@@ -69,7 +77,11 @@ public class UsuarioController {
             return;
         }
 
-        Usuario nuevoUsuario = new Usuario(loginView.getRegisterUsername().trim(), loginView.getRegisterEmail().trim(), loginView.getRegisterPassword());
+        Usuario nuevoUsuario = new Usuario(
+                loginView.getRegisterUsername().trim(), 
+                loginView.getRegisterPassword(), 
+                loginView.getRegisterEmail().trim()
+        );
 
         try {
 

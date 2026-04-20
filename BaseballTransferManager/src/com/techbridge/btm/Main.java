@@ -1,21 +1,19 @@
 package com.techbridge.btm;
-
-/**
- *
- * @author Surky
- */
 import com.techbridge.btm.controller.UsuarioController;
 import com.techbridge.btm.repository.UsuarioRepository;
 import com.techbridge.btm.repository.UsuarioRepositoryImpl;
 import com.techbridge.btm.service.AuthService;
 import com.techbridge.btm.view.LoginJFrame;
 
-public class PruebaAuth {
+/**
+ *
+ * @author Surky
+ */
+public class Main {
 
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginJFrame.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Main.class.getName());
 
     public static void main(String[] args) {
-
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -27,20 +25,18 @@ public class PruebaAuth {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
 
+        //  Arrancar la aplicación abriendo EL LOGIN 
         java.awt.EventQueue.invokeLater(() -> {
-
-            // 1. Repositorio
+            //  dependencias de autenticación
             UsuarioRepository repo = new UsuarioRepositoryImpl();
-
-            // 2. Servicio
             AuthService service = new AuthService(repo);
-
-            // 3. Controlador
             UsuarioController controller = new UsuarioController(service);
 
-            // 4. Vista
+            // Iniciar la vista de Login
             LoginJFrame view = new LoginJFrame(controller);
-            view.setVisible(true);
+            view.setVisible(true);            
+
         });
     }
 }
+

@@ -39,8 +39,9 @@ public class Menu extends javax.swing.JPanel {
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/4.png")),"Transferencias", 3);
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/5.png")),"Estadisticas", 4);
         addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/6.png")),"Comparar", 5);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/Heart.png")),"Acerca de", 6);
         addEmpty();
-        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/logout.png")), "Logout", 8);
+        addMenu(new ImageIcon(getClass().getResource("/com/techbridge/btm/view/icon/logout.png")), "Logout", 7);
     }
     
     private void addEmpty(){

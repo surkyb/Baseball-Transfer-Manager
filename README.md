@@ -114,5 +114,13 @@ El proyecto está estructurado siguiendo el patrón **MVC (Modelo - Vista - Cont
 
 **Techbridge**
 
+| Nombre           | Rol                          |
+|------------------|------------------------------|
+| Gilbert Vido     | Backend Developer            |
+| Lucas Guerra     | QA Tester                    |
+| Joshua           | Backend & Base de Datos      |
+| Surky            | Arquitecta & Frontend        |
+| Pedro Parra      | Assistant Developer          |
+
 ---
 

@@ -116,7 +116,7 @@ El proyecto está estructurado siguiendo el patrón **MVC (Modelo - Vista - Cont
 
 | Nombre           | Rol                          |
 |------------------|------------------------------|
-| Gilbert Vido     | Backend Developer            |
+| Gilber Vido     | Backend Developer            |
 | Lucas Guerra     | QA Tester                    |
 | Joshua           | Backend & Base de Datos      |
 | Surky            | Arquitecta & Frontend        |

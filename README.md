@@ -31,36 +31,37 @@ Este sistema propone una solución estructurada mediante una aplicación que:
 
 ---
 
-## 🚀 Funcionalidades Principales
-
-* 🔐 **Login de usuario**
+* 🔐 **Login de usuario**  
   Acceso seguro al sistema mediante autenticación.
 
+![Login](imagenes/login.png)
+
 * 🏟️ **Registro de equipos**
-  Creación y gestión de equipos deportivos.
+
+![Equipos](imagenes/equipos.jpeg)
 
 * 👤 **Gestión de jugadores**
-  Registro, consulta y administración de jugadores.
+
+![Jugadores](imagenes/jugadores.jpeg)
 
 * 🔄 **Asignación de jugadores a equipos**
-  Relación directa entre jugadores y equipos.
 
 * 💰 **Transferencias entre equipos**
-  Simulación de fichajes dentro del sistema.
+
+![Transferencias](imagenes/transferencia.png)
 
 * 📄 **Gestión de contratos**
-  Control de inicio, duración y vencimiento.
 
 * 🆓 **Agentes libres automáticos**
-  Los jugadores pasan a estado libre cuando su contrato expira.
 
 * 📊 **Actualización de valor del jugador**
-  El valor se ajusta dinámicamente según sus estadísticas.
+
+![Estadísticas](imagenes/estadisticas.jpeg)
 
 * 📈 **Consulta y comparación**
-  Visualización y análisis de jugadores y equipos.
 
----
+![Comparacion](imagenes/compararjugadores.jpeg)
+--
 
 ## 🧠 Arquitectura del Sistema
 
@@ -108,11 +109,13 @@ El proyecto está estructurado siguiendo el patrón **MVC (Modelo - Vista - Cont
 5. Realiza transferencias
 6. Consulta estadísticas y compara jugadores
 
+![Dashboard](imagenes/dashboard.jpeg)
 ---
 
 ## 👥 Equipo de Desarrollo
 
-**Techbridge**
+# 💼 **TECHBRIDGE**
+
 
 | Nombre           | Rol                          |
 |------------------|------------------------------|
